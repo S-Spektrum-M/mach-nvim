@@ -76,5 +76,5 @@ local servers = {
 }
 
 for _, server in ipairs(servers) do
-    vim.defer_fn(function() vim.lsp.enable(server) end, 0)
+    vim.lsp.enable(server)
 end
