@@ -1,0 +1,52 @@
+==============================================================================
+MACH Changelog                                   *mach-changelog*
+
+A minimal, fast, and modular Neovim distribution tailored for systems and C++
+development.
+
+This changelog tracks notable changes and updates to the MACH Neovim
+configuration.
+
+------------------------------------------------------------------------------
+Version 1.0.0  (Initial Release)
+- 🏁 Project bootstrapped as a standalone Neovim distribution
+- ✨ Features:
+  - LSP support
+  - Fast startup
+  - Completion
+  - Git integration
+  - UI
+  - Navigation
+  - Code tools
+  - AI-assisted coding
+- 🚀 Startup Time: ~15–20ms cold start
+
+------------------------------------------------------------------------------
+Planned Features                                 *mach-plans*
+
+- DAP debugging setup with `nvim-dap`
+- Per-project override support (`.mach.lua`)
+- More snippets and code templates
+- Dashboard shortcut customization
+
+------------------------------------------------------------------------------
+Feedback and Contributions                       *mach-contributing*
+
+If you're using MACH and want to contribute:
+- PRs and Issues are welcome at https://github.com/S-Spektrum-M/mach-nvim
+- You can also raise issues or suggestions!
+
+------------------------------------------------------------------------------
+Index                                             *mach-index*
+
+| Section         | Tag                  |
+|----------------|----------------------|
+| Changelog       | *mach-changelog*     |
+| Planned         | *mach-plans*         |
+| Contributing    | *mach-contributing*  |
+| Index           | *mach-index*         |
+
+==============================================================================
+
+vim:tw=78:ts=8:ft=help:norl:
+
