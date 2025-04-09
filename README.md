@@ -1,6 +1,7 @@
 # Mach - A Neovim Configuration
 
-A modern, Lua-based Neovim configuration focused on providing a productive development environment.
+A modern, Neovim configuration commited to creating a productive development
+environment with as little overhead over vim as possible.
 
 ## Installation
 

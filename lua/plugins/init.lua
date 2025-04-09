@@ -54,5 +54,7 @@ for _, dir in ipairs(plugin_dirs) do
   vim.list_extend(all_specs, load_plugin_specs_from(dir))
 end
 
+vim.list_extend(all_specs, require('plugins.custom'))
+
 -- Setup Lazy with discovered specs
 require("lazy").setup(all_specs, nil)

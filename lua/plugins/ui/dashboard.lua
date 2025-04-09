@@ -3,7 +3,7 @@ local HEADER_CONTENT = {
   [[                  .      █▀▄▀█ ▄▀█ █▀▀ █░█      .                  ]],
   [[                 //      █░▀░█ █▀█ █▄▄ █▀█      \\                 ]],
   [[                //                               \\                ]],
-  [[               //              1.0.0              \\               ]],
+  [[               //                                 \\               ]],
   [[              //                _._                \\              ]],
   [[           .---.              .//|\\.              .---.           ]],
   [[ ________ / .-. \_________..-~ _.-._ ~-..________ / .-. \_________ ]],
@@ -21,9 +21,11 @@ local CENTER_ENTRIES = {
   { icon = "  ", desc = "Quit", action = "qa", key = "q" },
 }
 
-local FOOTER_CONTENT = {
-  "https://github.com/S-Spektrum-M/mach-nvim",
-}
+local nvim_ver = vim.version()
+local nvim_version_str = string.format("neovim v%d.%d.%d", nvim_ver.major, nvim_ver.minor, nvim_ver.patch)
+local footer_left_padding = string.rep(" ", #nvim_version_str - 11)
+
+local FOOTER_CONTENT = { footer_left_padding .. "run :h mach   mach-nvim v1.0.0   " .. nvim_version_str }
 
 local function padded_layout()
   local win_height = vim.api.nvim_win_get_height(0)
