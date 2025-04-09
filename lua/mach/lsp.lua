@@ -66,7 +66,7 @@ local servers = {
     "denols",
     "gopls",
     "jsonls",
-    "lua_ls",
+    "luals",
     "pylsp",
     "rust_analyzer",
     "taplo",
