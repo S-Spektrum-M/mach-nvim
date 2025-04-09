@@ -69,12 +69,6 @@ return {
         },
     },
     keys = {
-<<<<<<< HEAD
-        { "<leader>a", desc = "Avante", mode = {'n', 'v'}},
-||||||| 183079f
-        { "<leader>a", desc = "Avante", },
-=======
         { "<leader>a", desc = "Avante", mode = {'n', 'v'}, },
->>>>>>> 10c16e26dacbc3acbfa5a0b4e852731571256694
     }
 }
