@@ -25,7 +25,7 @@ opt.tabstop = 4
 opt.shiftwidth = 4
 opt.expandtab = true
 
-opt.encoding = 'utf-8'
+opt.encoding = "utf-8"
 opt.updatetime = 10
 opt.backup = false
 opt.swapfile = false
@@ -40,7 +40,7 @@ opt.termguicolors = true
 opt.conceallevel = 2
 
 wopt.spell = false
-bopt.spelllang = 'en_us'
+bopt.spelllang = "en_us"
 
 vim.g.mapleader = " "
 

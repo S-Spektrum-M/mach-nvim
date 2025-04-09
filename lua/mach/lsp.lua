@@ -1,29 +1,17 @@
-local diag_config1 =
-{
-    virtual_text =
-        {
-            enabled = true,
-            severity =
-                {
-                    max = vim.diagnostic.severity.WARN,
-                },
-        },
-    virtual_lines =
-        {
-            enabled = true,
-            severity =
-                {
-                    min = vim.diagnostic.severity.ERROR,
-                },
-        },
-} local diag_config2 =
-{
+local diag_config1 = {
+    virtual_text = { enabled = true, severity = { max = vim.diagnostic.severity.WARN, }, },
+    virtual_lines = { enabled = true, severity = { min = vim.diagnostic.severity.ERROR, }, },
+}
+
+local diag_config2 = {
     virtual_text = true,
     virtual_lines = false,
-} vim.diagnostic.config(diag_config2) local diag_config_basic = false
+}
 
-local map =
-vim.keymap.set
+vim.diagnostic.config(diag_config2)
+local diag_config_basic = false
+
+local map = vim.keymap.set
 
 map("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>",
     {noremap = true, desc = "Go to declaration"})
@@ -75,6 +63,4 @@ local servers = {
     "zls",
 }
 
-for _, server in ipairs(servers) do
-    vim.lsp.enable(server)
-end
+vim.lsp.enable(servers)
