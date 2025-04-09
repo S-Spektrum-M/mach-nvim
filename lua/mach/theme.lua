@@ -48,4 +48,4 @@ for _, v in pairs(HighlightTable) do
 end
 
 vim.opt.background = "dark"
-vim.defer_fn(function() vim.cmd.colorscheme("odyssey") end, 30)
+vim.defer_fn(function() vim.cmd.colorscheme("obsidian") end, 30)
