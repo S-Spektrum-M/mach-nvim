@@ -1,3 +1,3 @@
 return {
-    filetypes = 'lua',
+    filetypes = { 'lua', },
 }
