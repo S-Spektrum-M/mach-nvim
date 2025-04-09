@@ -1,8 +1,7 @@
 return {
     "folke/snacks.nvim",
     priority = 1000,
-    event = "VeryLazy",   -- or some keybinding
-    lazy = true,
+    lazy = false,
     opts = {
         bigfile = { enabled = true },
         dashboard = { enabled = false },
