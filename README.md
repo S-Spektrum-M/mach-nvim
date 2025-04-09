@@ -61,12 +61,7 @@ This configuration comes pre-loaded with plugins managed by [lazy.nvim](https://
 ## Installation
 
 ```bash
-mv ~/.config/nvim ~/.config/nvim.bak
-mv ~/.local/share/nvim ~/.local/share/nvim.bak
-
-git clone https://github.com/S-Spektrum-M/mach-nvim.git ~/.config/nvim
-
-nvim
+curl -s https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh | bash
 ```
 
 ## Post-Installation
