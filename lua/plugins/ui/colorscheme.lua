@@ -1,17 +1,10 @@
 return {
-    -- {
-    --     "S-Spektrum-M/odyssey.nvim",
-    --     event = 'ColorSchemePre',
-    --     config = function()
-    --         require('odyssey').setup('odyssey')
-    --     end
-    -- },
     {
-        dir = "~/projects/config/obsidian.nvim/",
+        "S-Spektrum-M/odyssey.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd("colorscheme obsidian")
+            vim.cmd("colorscheme odyssey")
         end
     }
 }
