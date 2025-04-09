@@ -1,7 +1,9 @@
 return {
     "numToStr/Comment.nvim",
-    -- event = { "VeryLazy" },
-    -- keys = { "gc", "gb" },
+    keys = {
+        { "gc", mode = {'n', 'v'} },
+        { "gb", mode = {'n', 'v'} },
+    },
     config = function ()
         require('Comment').setup()
     end,
@@ -29,5 +31,4 @@ return {
         pre_hook = nil,
         post_hook = nil,
     },
-    lazy = true,
 }

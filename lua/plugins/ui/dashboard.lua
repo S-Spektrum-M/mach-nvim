@@ -1,4 +1,10 @@
 -- source: https://asciiart.cc/view/11079
+
+local lazy_stats = require("lazy").stats()
+local plugin_count = lazy_stats.count
+local startup_time = math.floor(lazy_stats.startuptime * 100 + 0.5) / 100 -- round to 2 decimals
+
+
 local HEADER_CONTENT = {
   [[                  .      █▀▄▀█ ▄▀█ █▀▀ █░█      .                  ]],
   [[                 //      █░▀░█ █▀█ █▄▄ █▀█      \\                 ]],

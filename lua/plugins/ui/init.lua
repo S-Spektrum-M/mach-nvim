@@ -1,4 +1,4 @@
-return {
+--[[ return {
     require('plugins.ui.dashboard'),
     require('plugins.ui.lualine'),
     require('plugins.ui.snacks'),
@@ -6,4 +6,4 @@ return {
     require('plugins.ui.treesitter'),
     require('plugins.ui.ts-rainbow'),
     require('plugins.ui.which-key'),
-}
+} ]]
