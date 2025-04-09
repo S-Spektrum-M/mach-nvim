@@ -1,0 +1,8 @@
+require('opts')
+require('plugins')
+require('commands')
+require('keymaps')
+require('functions')
+require('theme')
+require('lsp')
+require('ac')

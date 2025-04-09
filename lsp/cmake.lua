@@ -1,0 +1,3 @@
+return {
+    filetyes = {'cmake', 'cmakecache'},
+}
