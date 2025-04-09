@@ -2,9 +2,11 @@
 
 A modern, Lua-based Neovim configuration focused on providing a productive development environment.
 
-## Philosophy
+## Installation
 
-Handle large files with IDE-level ease and small scripts with vi-level speed.
+```bash
+curl -s https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh | bash
+```
 
 ## Features
 
@@ -58,17 +60,6 @@ This configuration comes pre-loaded with plugins managed by [lazy.nvim](https://
 - *(Optional)* **Build Tools:** `make`, C compiler, etc. for Treesitter and LSP
 - *(Optional)* **OpenAI Key:** For `avante.nvim`
 
-## Installation
-
-```bash
-curl -s https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh | bash
-```
-
-## Post-Installation
-
-- Run `:Lazy sync` if plugins don't install automatically.
-- Install LSPs via `:Mason` or `:Update`.
-- Run `:TSUpdate` for Treesitter parsers.
 
 ## Keymaps
 
