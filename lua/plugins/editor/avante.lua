@@ -1,6 +1,5 @@
 return {
     "yetone/avante.nvim",
-    event = { "ModeChanged", },
     -- Never set this value to "*"! Never!
     version = false,
     opts = {
@@ -47,7 +46,6 @@ return {
         "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
         "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
         {
-            -- support for image pasting
             "HakonHarnes/img-clip.nvim",
             -- event = "VeryLazy",
             opts = {
