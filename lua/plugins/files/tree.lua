@@ -19,6 +19,7 @@ return {
         end
         require("nvim-tree").setup({
             on_attach = my_on_attach,
+            view = { width = math.min(math.floor(0.15 * vim.api.nvim_win_get_width(0)), 40)},
         })
         vim.g.loaded_netrw = 1
         vim.g.loaded_netrwPlugin = 1

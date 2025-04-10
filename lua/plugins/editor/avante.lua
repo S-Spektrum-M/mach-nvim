@@ -1,18 +1,19 @@
 return {
     "yetone/avante.nvim",
     event = { "ModeChanged", },
-    version = false, -- Never set this value to "*"! Never!
+    -- Never set this value to "*"! Never!
+    version = false,
     opts = {
         -- add any opts here
         auto_suggestions_provider = "ollama",
         provider = "openai",
         openai = {
             endpoint = "https://api.openai.com/v1",
-            model = "o3-mini",        -- your desired model (or use gpt-4o, etc.)
-            timeout = 30000,          -- Timeout in milliseconds, increase this for reasoning models
+            model = "o3-mini",             -- your desired model (or use gpt-4o, etc.)
+            timeout = 60000,               -- Timeout in milliseconds, increase this for reasoning models
             temperature = 0,
-            max_completion_tokens = 32768,       -- Increase this to include reasoning tokens (for reasoning models)
-            reasoning_effort = "low", -- low|medium|high, only used for reasoning models
+            max_completion_tokens = 32768, -- Increase this to include reasoning tokens (for reasoning models)
+            reasoning_effort = "low",      -- low|medium|high, only used for reasoning models
         },
         ollama = { model = "mistral:latest", },
         behaviour = {
@@ -27,6 +28,12 @@ return {
             enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
         },
         file_selector = { provider = "native", },
+        windows = {
+            position = "right", -- the position of the sidebar
+            wrap = true,        -- similar to vim.o.wrap
+            width = 20,         -- default % based on available width
+
+        }
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = vim.fn.has("win32") == 1 and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
@@ -67,7 +74,35 @@ return {
         },
     },
     keys = {
-        { "<leader>aa", "<CMD>AvanteAsk<CR>", desc = "Avante", mode = {'n', 'v'}, },
-        { "<leader>ae", "<CMD>AvanteEdit<CR>", desc = "Avante", mode = {'n', 'v'}, },
+        {
+            "<leader>aa",
+            "<CMD>AvanteAsk<CR>",
+            desc = "Avante",
+            mode = { 'n', 'v' },
+        },
+        {
+            "<leader>ae",
+            "<CMD>AvanteEdit<CR>",
+            desc = "Avante",
+            mode = { 'n', 'v' },
+        },
+        {
+            "<leader>at",
+            "<CMD>AvanteToggle<CR>",
+            desc = "Avante",
+            mode = { 'n', 'v' },
+        },
+        {
+            "<leader>af",
+            "<CMD>AvanteFocus<CR>",
+            desc = "Avante",
+            mode = { 'n', 'v' },
+        },
+        {
+            "<leader>a?",
+            "<CMD>AvanteModels<CR>",
+            desc = "Avante",
+            mode = { 'n', 'v' },
+        },
     }
 }
