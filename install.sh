@@ -348,7 +348,7 @@ install_config() {
     echo "Cloning Neovim configuration..."
 
     # Clone configuration
-    git clone https://github.com/S-Spektrum-M/mach-nvim "$NVIM_CONFIG_DIR"
+    git clone https://github.com/S-Spektrum-M/mach-nvim "$NVIM_CONFIG_DIR" > /dev/null 2>&1
 
     # Handle .git directory
     if [[ "$NON_INTERACTIVE" == true ]]; then
