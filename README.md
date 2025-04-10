@@ -6,7 +6,7 @@ environment with as little overhead over vim as possible.
 ## Installation
 
 ```bash
-curl -s https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh | bash
+wget https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh && bash install.sh
 ```
 
 ## Features

@@ -170,9 +170,101 @@ install_config() {
     echo "Configuration successfully installed."
 }
 
+# Install mach-update to PATH
+install_mach_update() {
+    read -p "Would you like to install 'mach-update' to your PATH? [y/N] " choice_mach
+    if [[ "$choice_mach" =~ ^[Yy] ]]; then
+        echo "Installing mach-update to PATH..."
+
+        # Create the mach-update script in the right location
+        MACH_UPDATE_SCRIPT="$NVIM_CONFIG_DIR/bin/mach-update"
+
+        # Ensure the bin directory exists
+        mkdir -p "$NVIM_CONFIG_DIR/bin"
+
+        # Create the mach-update script
+        cat > "$MACH_UPDATE_SCRIPT" << 'EOF'
+#!/usr/bin/env bash
+
+# Script to update mach-nvim configuration
+set -euo pipefail
+
+NVIM_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+
+echo "=== Updating mach-nvim ==="
+
+if [ ! -d "$NVIM_CONFIG_DIR" ]; then
+    echo "Error: Neovim configuration directory not found at $NVIM_CONFIG_DIR"
+    exit 1
+fi
+
+# Check if .git directory exists
+if [ ! -d "$NVIM_CONFIG_DIR/.git" ]; then
+    echo "Warning: .git directory not found. Your configuration may have been installed without git history."
+    echo "Manual update required. Please reinstall the configuration."
+    exit 1
+fi
+
+# Update the configuration
+echo "Pulling latest changes..."
+cd "$NVIM_CONFIG_DIR"
+git pull
+
+# Update plugins
+echo "Updating plugins..."
+nvim --headless "+Lazy sync" +qa
+
+echo "mach-nvim has been updated successfully!"
+EOF
+
+        # Make it executable
+        chmod +x "$MACH_UPDATE_SCRIPT"
+
+        # Set up symbolic link to make it available in PATH
+        LOCAL_BIN_DIR="$HOME/.local/bin"
+        mkdir -p "$LOCAL_BIN_DIR"
+
+        # Create symlink
+        ln -sf "$MACH_UPDATE_SCRIPT" "$LOCAL_BIN_DIR/mach-update"
+
+        # Check if ~/.local/bin is in PATH, if not suggest adding it
+        if [[ ":$PATH:" != *":$LOCAL_BIN_DIR:"* ]]; then
+            echo "Notice: $LOCAL_BIN_DIR is not in your PATH."
+            echo "To add it, run:"
+            echo "  echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc"
+            echo "  source ~/.bashrc"
+
+            # Ask if user wants to add it automatically
+            read -p "Would you like to add it automatically? [y/N] " choice_path
+            if [[ "$choice_path" =~ ^[Yy] ]]; then
+                SHELL_RC=""
+                if [[ "$SHELL" == *"zsh"* ]]; then
+                    SHELL_RC="$HOME/.zshrc"
+                elif [[ "$SHELL" == *"bash"* ]]; then
+                    SHELL_RC="$HOME/.bashrc"
+                fi
+
+                if [[ -n "$SHELL_RC" ]]; then
+                    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
+                    echo "Added $LOCAL_BIN_DIR to your PATH in $SHELL_RC"
+                    echo "Please restart your terminal or run 'source $SHELL_RC' for the changes to take effect."
+                else
+                    echo "Could not detect shell configuration file. Please add $LOCAL_BIN_DIR to your PATH manually."
+                fi
+            fi
+        else
+            echo "mach-update has been successfully installed to your PATH."
+            echo "You can now run 'mach-update' from anywhere to update your mach-nvim configuration."
+        fi
+    else
+        echo "Skipping mach-update installation."
+    fi
+}
+
 # Main execution
 install_neovim
 install_config
+install_mach_update
 
 # First run initialization
 echo -n "Would you like to run Neovim now to initialize plugins? [y/N] "
