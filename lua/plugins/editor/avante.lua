@@ -1,6 +1,6 @@
 return {
     "yetone/avante.nvim",
-    -- event = "Keypress",
+    event = { "ModeChanged", },
     version = false, -- Never set this value to "*"! Never!
     opts = {
         -- add any opts here
@@ -67,7 +67,7 @@ return {
         },
     },
     keys = {
-        { "<leader>aa", desc = "Avante", mode = {'n', 'v'}, },
-        { "<leader>ae", desc = "Avante", mode = {'n', 'v'}, },
+        { "<leader>aa", "<CMD>AvanteAsk<CR>", desc = "Avante", mode = {'n', 'v'}, },
+        { "<leader>ae", "<CMD>AvanteEdit<CR>", desc = "Avante", mode = {'n', 'v'}, },
     }
 }
