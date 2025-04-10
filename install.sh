@@ -11,7 +11,7 @@ REQUIRED_NVIM_VERSION="0.9.0" # Set your minimum required version
 
 # Default values for flags
 INSTALL_METHOD=""
-REMOVE_GIT=false
+REMOVE_GIT=true  # Default is to remove git
 INSTALL_MACH_UPDATE=false
 ADD_TO_PATH=false
 INITIALIZE_PLUGINS=false
@@ -41,58 +41,112 @@ Options:
     -p, --path                  Add mach-update to PATH
     -i, --init                  Initialize plugins after installation
 
+Short flags can be combined:
+    -nupi                       Equivalent to -n -u -p -i (non-interactive, update tool, path, init)
+    -ngm SOURCE                 Equivalent to -n -g -m SOURCE
+
 Examples:
     # Interactive mode (default)
     $0
 
-    # Non-interactive: Install from package manager, no git, install update tool, add to path, initialize plugins
+    # Non-interactive: Install from package manager, install update tool, add to path, initialize plugins
     $0 -n -m PKG -u -p -i
+    # OR with combined flags:
+    $0 -nupi -m PKG
 
     # Non-interactive: Skip Neovim installation, keep git, don't install update tool
-    $0 -n -m SKIP -g
+    $0 -n -g -m SKIP
+    # OR with combined flags:
+    $0 -ng -m SKIP
 EOF
     exit 0
 }
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        -h|--help)
-            show_help
-            ;;
-        -n|--non-interactive)
-            NON_INTERACTIVE=true
-            shift
-            ;;
-        -m|--method)
-            if [[ -z "$2" || "$2" =~ ^- ]]; then
-                echo "Error: --method requires an argument (SOURCE, PKG, or SKIP)"
-                exit 1
-            fi
-            INSTALL_METHOD=$(echo "$2" | tr '[:lower:]' '[:upper:]')
-            shift 2
-            ;;
-        -g|--git-keep)
-            REMOVE_GIT=false
-            shift
-            ;;
-        -u|--update-tool)
-            INSTALL_MACH_UPDATE=true
-            shift
-            ;;
-        -p|--path)
-            ADD_TO_PATH=true
-            shift
-            ;;
-        -i|--init)
-            INITIALIZE_PLUGINS=true
-            shift
-            ;;
-        *)
-     echo "Unknown option: $1"
-            show_help
-            ;;
-    esac
+    key="$1"
+
+    # Handle combined short flags (e.g., -nupi)
+    if [[ ${key:0:1} == "-" && ${key:1:1} != "-" && ${#key} -gt 2 ]]; then
+        # Remove the leading '-' and process each character
+        combined_flags=${key:1}
+        for ((i=0; i<${#combined_flags}; i++)); do
+            flag=${combined_flags:$i:1}
+            case "$flag" in
+                h)
+                    show_help
+                    ;;
+                n)
+                    NON_INTERACTIVE=true
+                    ;;
+                g)
+                    REMOVE_GIT=false
+                    ;;
+                u)
+                    INSTALL_MACH_UPDATE=true
+                    ;;
+                p)
+                    ADD_TO_PATH=true
+                    ;;
+                i)
+                    INITIALIZE_PLUGINS=true
+                    ;;
+                m)
+                    # If 'm' is part of combined flags, the next argument should be the method
+                    if [[ $# -lt 2 || "$2" =~ ^- ]]; then
+                        echo "Error: -m requires an argument (SOURCE, PKG, or SKIP)"
+                        exit 1
+                    fi
+                    INSTALL_METHOD=$(echo "$2" | tr '[:lower:]' '[:upper:]')
+                    shift  # Skip the next argument as it's the method
+                    ;;
+                *)
+                    echo "Unknown flag: -$flag"
+                    show_help
+                    ;;
+            esac
+        done
+        shift
+    else
+        # Handle long options and single short options
+        case "$key" in
+            -h|--help)
+                show_help
+                ;;
+            -n|--non-interactive)
+                NON_INTERACTIVE=true
+                shift
+                ;;
+            -m|--method)
+                if [[ -z "$2" || "$2" =~ ^- ]]; then
+                    echo "Error: --method requires an argument (SOURCE, PKG, or SKIP)"
+                    exit 1
+                fi
+                INSTALL_METHOD=$(echo "$2" | tr '[:lower:]' '[:upper:]')
+                shift 2
+                ;;
+            -g|--git-keep)
+                REMOVE_GIT=false
+                shift
+                ;;
+            -u|--update-tool)
+                INSTALL_MACH_UPDATE=true
+                shift
+                ;;
+            -p|--path)
+                ADD_TO_PATH=true
+                shift
+                ;;
+            -i|--init)
+                INITIALIZE_PLUGINS=true
+                shift
+                ;;
+            *)
+                echo "Unknown option: $1"
+                show_help
+                ;;
+        esac
+    fi
 done
 
 # Validate non-interactive mode settings
@@ -190,17 +244,17 @@ install_from_source() {
 
     # Check if we're on Ubuntu/Debian
     if command -v apt-get >/dev/null 2>&1; then
-        sudo apt-get update > /dev/null 2>&1
-        sudo apt-get install -y ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl > /dev/null 2>&1
+        sudo apt-get update
+        sudo apt-get install -y ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
     # Check if we're on Fedora/RHEL/CentOS
     elif command -v dnf >/dev/null 2>&1; then
-        sudo dnf -y install ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch curl > /dev/null 2>&1
+        sudo dnf -y install ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch curl
     # Check if we're on Arch
     elif command -v pacman >/dev/null 2>&1; then
-        sudo pacman -S base-devel cmake unzip ninja curl > /dev/null 2>&1
+        sudo pacman -S base-devel cmake unzip ninja curl
     # macOS with Homebrew
     elif command -v brew >/dev/null 2>&1; then
-        brew install ninja libtool automake cmake pkg-config gettext curl > /dev/null 2>&1
+        brew install ninja libtool automake cmake pkg-config gettext curl
     else
         echo "Could not detect package manager. Please install build dependencies manually."
         if [[ "$NON_INTERACTIVE" == false ]]; then
@@ -217,7 +271,7 @@ install_from_source() {
 
     echo "Cloning Neovim repository..."
     local temp_dir=$(mktemp -d)
-    git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable > /dev/null 2>&1
+    git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable
 
     echo "Building Neovim from source (this may take a while)..."
     cd "$temp_dir"
@@ -297,21 +351,22 @@ install_config() {
     git clone https://github.com/S-Spektrum-M/mach-nvim "$NVIM_CONFIG_DIR"
 
     # Handle .git directory
-    local remove_git=true
-
     if [[ "$NON_INTERACTIVE" == true ]]; then
-        remove_git="$REMOVE_GIT"
+        if [[ "$REMOVE_GIT" == true ]]; then
+            echo "Removing .git folder..."
+            rm -rf "$NVIM_CONFIG_DIR/.git"
+        else
+            echo "Keeping .git folder for future updates."
+        fi
     else
         echo -e "${WHITE}Would you like to remove the .git folder? [Y/n]${NC} "
         read -p $'\033[1;37m> \033[0m' choice_git
-        [[ -z "$choice_git" || "$choice_git" =~ ^[Yy] ]] && remove_git=true || remove_git=false
-    fi
-
-    if [[ "$remove_git" == true ]]; then
-        echo "Removing .git folder..."
-        rm -rf "$NVIM_CONFIG_DIR/.git"
-    else
-        echo "Keeping .git folder for future updates."
+        if [[ -z "$choice_git" || "$choice_git" =~ ^[Yy] ]]; then
+            echo "Removing .git folder..."
+            rm -rf "$NVIM_CONFIG_DIR/.git"
+        else
+            echo "Keeping .git folder for future updates."
+        fi
     fi
 
     echo "Configuration successfully installed."
@@ -402,7 +457,23 @@ EOF
 
             if [[ "$NON_INTERACTIVE" == true ]]; then
                 if [[ "$ADD_TO_PATH" == true ]]; then
-                    add_to_path=true
+                    # Add to PATH in shell configuration
+                    SHELL_RC=""
+                    if [[ "$SHELL" == *"zsh"* ]]; then
+                        SHELL_RC="$HOME/.zshrc"
+                    elif [[ "$SHELL" == *"bash"* ]]; then
+                        SHELL_RC="$HOME/.bashrc"
+                    fi
+
+                    if [[ -n "$SHELL_RC" ]]; then
+                        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
+                        echo "Added $LOCAL_BIN_DIR to your PATH in $SHELL_RC"
+                        echo "Please restart your terminal or run 'source $SHELL_RC' for the changes to take effect."
+                    else
+                        echo "Could not detect shell configuration file. Please add $LOCAL_BIN_DIR to your PATH manually."
+                    fi
+                else
+                    echo "Path flag (-p) not set, not modifying PATH."
                 fi
             else
                 echo "To add it, run:"
@@ -412,23 +483,22 @@ EOF
                 # Ask if user wants to add it automatically
                 echo -e "${WHITE}Would you like to add it automatically? [y/N]${NC} "
                 read -p $'\033[1;37m> \033[0m' choice_path
-                [[ "$choice_path" =~ ^[Yy] ]] && add_to_path=true
-            fi
+                if [[ "$choice_path" =~ ^[Yy] ]]; then
+                    # Add to PATH in shell configuration
+                    SHELL_RC=""
+                    if [[ "$SHELL" == *"zsh"* ]]; then
+                        SHELL_RC="$HOME/.zshrc"
+                    elif [[ "$SHELL" == *"bash"* ]]; then
+                        SHELL_RC="$HOME/.bashrc"
+                    fi
 
-            if [[ "$add_to_path" == true ]]; then
-                SHELL_RC=""
-                if [[ "$SHELL" == *"zsh"* ]]; then
-                    SHELL_RC="$HOME/.zshrc"
-                elif [[ "$SHELL" == *"bash"* ]]; then
-                    SHELL_RC="$HOME/.bashrc"
-     fi
-
-                if [[ -n "$SHELL_RC" ]]; then
-                    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
-                    echo "Added $LOCAL_BIN_DIR to your PATH in $SHELL_RC"
-                    echo "Please restart your terminal or run 'source $SHELL_RC' for the changes to take effect."
-                else
-                    echo "Could not detect shell configuration file. Please add $LOCAL_BIN_DIR to your PATH manually."
+                    if [[ -n "$SHELL_RC" ]]; then
+                        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
+                        echo "Added $LOCAL_BIN_DIR to your PATH in $SHELL_RC"
+                        echo "Please restart your terminal or run 'source $SHELL_RC' for the changes to take effect."
+                    else
+                        echo "Could not detect shell configuration file. Please add $LOCAL_BIN_DIR to your PATH manually."
+                    fi
                 fi
             fi
         else
