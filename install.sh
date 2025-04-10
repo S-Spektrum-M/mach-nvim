@@ -271,7 +271,7 @@ install_from_source() {
 
     echo "Cloning Neovim repository..."
     local temp_dir=$(mktemp -d)
-    git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable
+    git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable > /dev/null 2>&1
 
     echo "Building Neovim from source (this may take a while)..."
     cd "$temp_dir"
