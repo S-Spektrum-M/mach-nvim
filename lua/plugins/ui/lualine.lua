@@ -11,7 +11,7 @@ end
 
 return {
     'nvim-lualine/lualine.nvim',
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
         vim.defer_fn(function()
             require('lualine').setup({
