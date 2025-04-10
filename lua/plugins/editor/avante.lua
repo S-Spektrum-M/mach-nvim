@@ -11,12 +11,10 @@ return {
             model = "o3-mini",        -- your desired model (or use gpt-4o, etc.)
             timeout = 30000,          -- Timeout in milliseconds, increase this for reasoning models
             temperature = 0,
-            max_tokens = 32768,       -- Increase this to include reasoning tokens (for reasoning models)
+            max_completion_tokens = 32768,       -- Increase this to include reasoning tokens (for reasoning models)
             reasoning_effort = "low", -- low|medium|high, only used for reasoning models
         },
-        ollama = {
-            model = "mistral:latest",
-        },
+        ollama = { model = "mistral:latest", },
         behaviour = {
             auto_suggestions = true, -- Experimental stage
             auto_set_highlight_group = true,
@@ -69,6 +67,7 @@ return {
         },
     },
     keys = {
-        { "<leader>a", desc = "Avante", mode = {'n', 'v'}, },
+        { "<leader>aa", desc = "Avante", mode = {'n', 'v'}, },
+        { "<leader>ae", desc = "Avante", mode = {'n', 'v'}, },
     }
 }
