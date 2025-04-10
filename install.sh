@@ -190,17 +190,17 @@ install_from_source() {
 
     # Check if we're on Ubuntu/Debian
     if command -v apt-get >/dev/null 2>&1; then
-        sudo apt-get update
-        sudo apt-get install -y ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
+        sudo apt-get update > /dev/null 2>&1
+        sudo apt-get install -y ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl > /dev/null 2>&1
     # Check if we're on Fedora/RHEL/CentOS
     elif command -v dnf >/dev/null 2>&1; then
-        sudo dnf -y install ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch curl
+        sudo dnf -y install ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch curl > /dev/null 2>&1
     # Check if we're on Arch
     elif command -v pacman >/dev/null 2>&1; then
-        sudo pacman -S base-devel cmake unzip ninja curl
+        sudo pacman -S base-devel cmake unzip ninja curl > /dev/null 2>&1
     # macOS with Homebrew
     elif command -v brew >/dev/null 2>&1; then
-        brew install ninja libtool automake cmake pkg-config gettext curl
+        brew install ninja libtool automake cmake pkg-config gettext curl > /dev/null 2>&1
     else
         echo "Could not detect package manager. Please install build dependencies manually."
         if [[ "$NON_INTERACTIVE" == false ]]; then
@@ -217,7 +217,7 @@ install_from_source() {
 
     echo "Cloning Neovim repository..."
     local temp_dir=$(mktemp -d)
-    git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable
+    git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable > /dev/null 2>&1
 
     echo "Building Neovim from source (this may take a while)..."
     cd "$temp_dir"
