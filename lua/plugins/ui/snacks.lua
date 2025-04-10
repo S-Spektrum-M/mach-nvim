@@ -1,15 +1,17 @@
+local nvim_ver = vim.version()
+
 local HEADER_CONTENT = {
-  [[                  .      █▀▄▀█ ▄▀█ █▀▀ █░█      .                  ]],
-  [[                 //      █░▀░█ █▀█ █▄▄ █▀█      \\                 ]],
-  [[                //                               \\                ]],
-  [[               //                                 \\               ]],
-  [[              //                _._                \\              ]],
-  [[           .---.              .//|\\.              .---.           ]],
-  [[ ________ / .-. \_________..-~ _.-._ ~-..________ / .-. \_________ ]],
-  [[          \ ._. /    H-     '--.___.--'     -H    \ ._. /          ]],
-  [[           •---•     H          [H]          H     •---•           ]],
-  [[                    _H_         _H_         _H_                    ]],
-  [[                    UUU         UUU         UUU                    ]],
+    [[                 .      █▀▄▀█ ▄▀█ █▀▀ █░█      .                 ]],
+    [[                //      █░▀░█ █▀█ █▄▄ █▀█      \\                ]],
+    [[               //             1.2.0             \\               ]],
+    ("              //        neovim     %d.%d.%d        \\\\              "):format(nvim_ver.major, nvim_ver.minor, nvim_ver.patch) ,
+    [[             //                _._                \\             ]],
+    [[          .---.              .//|\\.              .---.          ]],
+    [[________ / .-. \_________..-~ _.-._ ~-..________ / .-. \_________]],
+    [[         \ ._. /    H-     '--.___.--'     -H    \ ._. /         ]],
+    [[          •---•     H          [H]          H     •---•          ]],
+    [[                   _H_         _H_         _H_                   ]],
+    [[                   UUU         UUU         UUU                   ]],
 }
 
 local header = ""
@@ -17,25 +19,11 @@ for _, row in ipairs(HEADER_CONTENT) do
     header = header .. row .. '\n'
 end
 
-local nvim_ver = vim.version()
-local nvim_version_str = string.format("neovim v%d.%d.%d", nvim_ver.major, nvim_ver.minor, nvim_ver.patch)
-local mach_version_str = "mach-nvim 1.2.0"
-
-local FOOTER_CONTENT = { "run :h mach   " .. mach_version_str .. "   " .. nvim_version_str }
-
-local CENTER_ENTRIES = {
-    { icon = "  ", desc = "New File", action = "enew", key = "n" },
-    { icon = "  ", desc = "Find File", action = "Telescope find_files", key = "p" },
-    { icon = "  ", desc = "Recent Files", action = "Telescope oldfiles", key = "r" },
-    { icon = "󰒲  ", desc = "Update", action = "Update", key = "u" },
-    { icon = "  ", desc = "Quit", action = "qa", key = "q" },
-}
-
 local snacks_dashboard = {
     width = 60,
-    row = nil,                                                                 -- dashboard position. nil for center
-    col = nil,                                                                 -- dashboard position. nil for center
-    pane_gap = 4,                                                              -- empty columns between vertical panes
+    row = nil,                                                                   -- dashboard position. nil for center
+    col = nil,                                                                   -- dashboard position. nil for center
+    pane_gap = 4,                                                                -- empty columns between vertical panes
     autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
     -- These settings are used by some built-in sections
     preset = {
@@ -54,7 +42,7 @@ local snacks_dashboard = {
             { icon = " ", desc = "Quit", action = ":qa", key = "q" },
         },
         -- Used by the `header` section
-        header = header
+        header = header,
     },
     -- item field formatters
     formats = {
@@ -82,14 +70,18 @@ local snacks_dashboard = {
             end
             local dir, file = fname:match("^(.*)/(.+)$")
             return dir and { { dir .. "/", hl = "SnacksDashboardDir" }, { file, hl = "SnacksDashboardFile" } } or
-            { { fname, hl = "SnacksDashboardFile" } }
+                { { fname, hl = "SnacksDashboardFile" } }
         end,
     },
     sections = {
-        { section = "header" },
-        { section = "keys",  gap = 1, padding = 1 },
-        -- You can add the startup section back if you need it
-        -- { section = "startup" },
+        {
+            section = "header"
+        },
+        {
+            section = "keys",
+            gap = 1,
+            padding = { 1, 5 }
+        },
     },
 }
 
