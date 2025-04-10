@@ -5,21 +5,21 @@ function RunFile()
     local filename_ext = vim.fn.expand("%:t")
 
     if ft == "python" then
-        vim.cmd("!python3 " .. filename)
+        vim.cmd("FloatermNew --autoclose=0 python3 " .. filename)
     elseif ft == "javascript" then
-        vim.cmd("!node .")
+        vim.cmd("FloatermNew --autoclose=0 node .")
     elseif ft == "c" then
-        vim.cmd("!clang " .. filename .. " -o " .. filename_noext .. " && ./" .. filename_noext)
+        vim.cmd("FloatermNew --autoclose=0 clang " .. filename .. " -o " .. filename_noext .. " && ./" .. filename_noext)
     elseif ft == "cpp" then
-        vim.cmd("!g++ " .. filename .. " -o " .. filename_noext .. " --std=c++20 && ./" .. filename_noext)
+        vim.cmd("FloatermNew --autoclose=0 g++ " .. filename .. " -o " .. filename_noext .. " --std=c++20 && ./" .. filename_noext)
     elseif ft == "typescript" then
-        vim.cmd("!tsc " .. filename .. " && node " .. filename_noext .. ".js")
+        vim.cmd("FloatermNew --autoclose=0 tsc " .. filename .. " && node " .. filename_noext .. ".js")
     elseif ft == "java" then
-        vim.cmd("!javac " .. filename_ext .. " && java " .. filename_noext)
+        vim.cmd("FloatermNew --autoclose=0 javac " .. filename_ext .. " && java " .. filename_noext)
     elseif ft == "go" then
-        vim.cmd("!go run " .. filename)
+        vim.cmd("FloatermNew --autoclose=0 go run " .. filename)
     elseif ft == "lua" then
-        vim.cmd("!lua " .. filename)
+        vim.cmd("FloatermNew --autoclose=0 lua " .. filename)
     else
         vim.cmd("call Render()")
     end
@@ -49,7 +49,7 @@ function Render()
     elseif ft == "plaintex" then
         vim.cmd("call RenderLaTex()")
     elseif ft == "markdown" then
-        vim.cmd("!pandoc " .. filename_ext .. " -o " .. filename_noext .. ".pdf")
+        vim.cmd("FloatermNew pandoc " .. filename_ext .. " -o " .. filename_noext .. ".pdf")
         ViewPdf()
     elseif ft == "html" then
         vim.cmd("!open " .. filename_ext)
