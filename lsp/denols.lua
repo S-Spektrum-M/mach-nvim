@@ -28,6 +28,10 @@ default_config = {
             },
         },
     },
+    on_attach = function(client, bufnr)
+        local navic = require("nvim-navic")
+        navic.attach(client, bufnr)
+    end
 }
 
 return default_config
