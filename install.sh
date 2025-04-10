@@ -9,6 +9,10 @@ NVIM_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/nvim"
 NVIM_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/nvim"
 REQUIRED_NVIM_VERSION="0.9.0" # Set your minimum required version
 
+# Define color codes
+WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+
 echo "=== Neovim Installation and Configuration Setup ==="
 
 # Function to backup directories safely
@@ -40,7 +44,8 @@ install_neovim() {
     if ! check_nvim_version; then
         echo "Neovim not found or version too old."
 
-        PS3="Please select an installation method: "
+        echo -e "${WHITE}Please select an installation method:${NC}"
+        PS3=$'\033[1;37m> \033[0m'
         options=("Build from source" "Use package manager" "Skip installation")
         select opt in "${options[@]}"; do
             case $opt in
@@ -85,7 +90,8 @@ install_from_source() {
         brew install ninja libtool automake cmake pkg-config gettext curl
     else
         echo "Could not detect package manager. Please install build dependencies manually."
-        read -p "Continue anyway? [y/N] " -n 1 -r
+        echo -e "${WHITE}Continue anyway? [y/N]${NC} "
+        read -p $'\033[1;37m> \033[0m' -n 1 -r
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             return 1
@@ -174,7 +180,8 @@ install_config() {
     git clone https://github.com/S-Spektrum-M/mach-nvim "$NVIM_CONFIG_DIR"
 
     # Ask about removing .git
-    read -p "Would you like to remove the .git folder? [Y/n] " choice_git
+    echo -e "${WHITE}Would you like to remove the .git folder? [Y/n]${NC} "
+    read -p $'\033[1;37m> \033[0m' choice_git
     if [[ -z "$choice_git" || "$choice_git" =~ ^[Yy] ]]; then
         echo "Removing .git folder..."
         rm -rf "$NVIM_CONFIG_DIR/.git"
@@ -185,7 +192,8 @@ install_config() {
 
 # Install mach-update to PATH
 install_mach_update() {
-    read -p "Would you like to install 'mach-update' to your PATH? [y/N] " choice_mach
+    echo -e "${WHITE}Would you like to install 'mach-update' to your PATH? [y/N]${NC} "
+    read -p $'\033[1;37m> \033[0m' choice_mach
     if [[ "$choice_mach" =~ ^[Yy] ]]; then
         echo "Installing mach-update to PATH..."
 
@@ -225,7 +233,18 @@ git pull
 
 # Update plugins
 echo "Updating plugins..."
-nvim --headless "+Lazy sync" +qa
+echo -n "Syncing "
+nvim --headless "+Lazy sync" +qa > /dev/null 2>&1 &
+pid=$!
+spin='-\|/'
+i=0
+while kill -0 $pid 2>/dev/null; do
+    i=$(( (i+1) % 4 ))
+    printf "\rSyncing %c " "${spin:$i:1}"
+    sleep .1
+done
+printf "\rSync complete!    \n"
+wait $pid || { echo "Plugin sync failed"; exit 1; }
 
 echo "mach-nvim has been updated successfully!"
 EOF
@@ -248,7 +267,8 @@ EOF
             echo "  source ~/.bashrc"
 
             # Ask if user wants to add it automatically
-            read -p "Would you like to add it automatically? [y/N] " choice_path
+            echo -e "${WHITE}Would you like to add it automatically? [y/N]${NC} "
+            read -p $'\033[1;37m> \033[0m' choice_path
             if [[ "$choice_path" =~ ^[Yy] ]]; then
                 SHELL_RC=""
                 if [[ "$SHELL" == *"zsh"* ]]; then
@@ -274,18 +294,35 @@ EOF
     fi
 }
 
+# Function to initialize plugins with suppressed output
+initialize_plugins() {
+    echo "Initializing plugins (this may take a moment)..."
+    echo -n "Syncing "
+    nvim --headless "+Lazy sync" +qa > /dev/null 2>&1 &
+    pid=$!
+    spin='-\|/'
+    i=0
+    while kill -0 $pid 2>/dev/null; do
+        i=$(( (i+1) % 4 ))
+        printf "\rSyncing %c " "${spin:$i:1}"
+        sleep .1
+    done
+    printf "\rSync complete!    \n"
+    wait $pid || { echo "Plugin initialization failed"; return 1; }
+    echo "Plugins initialized successfully."
+}
+
 # Main execution
 install_neovim
 install_config
 install_mach_update
 
 # First run initialization
-echo -n "Would you like to run Neovim now to initialize plugins? [y/N] "
-read -p "" choice_run
+echo -e "${WHITE}Would you like to run Neovim now to initialize plugins? [y/N]${NC} "
+read -p $'\033[1;37m> \033[0m' choice_run
 if [[ "$choice_run" =~ ^[Yy] ]]; then
-    echo "Starting Neovim for the first time to install plugins..."
-    nvim --headless "+Lazy sync" +qa
-    echo "Plugins initialized. You can now use Neovim with your new configuration."
+    initialize_plugins
+    echo "You can now use Neovim with your new configuration."
 fi
 
 echo "Setup complete! Your Neovim is ready to use."
