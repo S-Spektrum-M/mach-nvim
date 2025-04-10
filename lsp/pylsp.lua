@@ -5,9 +5,7 @@ end
 default_config = {
     cmd = { exe_name('pylsp') },
     filetypes = { 'python' },
-    root_dir = function(fname)
-        return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
-    end,
+    rootmarkers = {'__pycache__', },
     single_file_support = true,
 }
 
