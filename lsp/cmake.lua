@@ -1,3 +1,0 @@
-return {
-    filetyes = {'cmake', 'cmakecache'},
-}
