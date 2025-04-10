@@ -1,6 +1,7 @@
-#   Mach - Neovim Configuration
+#  Mach - A Neovim Distribution
 
-A modern Neovim configuration focused on a productive development environment with minimal overhead.
+A modern Neovim distribution focused on a productive development environment
+with minimal overhead.
 
 ##  Installation
 
