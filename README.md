@@ -1,6 +1,3 @@
-OK, here's a revised version of your README.md, aiming for improved clarity, formatting, and conciseness:
-
-````markdown
 #   Mach - Neovim Configuration
 
 A modern Neovim configuration focused on a productive development environment with minimal overhead.
@@ -8,7 +5,12 @@ A modern Neovim configuration focused on a productive development environment wi
 ##  Installation
 
 ```bash
-wget https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh && bash install.sh
+wget https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh
+chmod +x install.sh
+# use the following for automated install
+./install.sh -nupig -m SOURCE
+# use the following for Interactive install
+./install.sh
 ````
 
 ## Features
@@ -17,108 +19,102 @@ This configuration uses [lazy.nvim](https://github.com/folke/lazy.nvim) to manag
 
 ### Core Functionality
 
-  * **LSP:** Integrated support via `nvim-lspconfig` and `mason.nvim` for easy server installation.
-  * **Completion:** Fast autocompletion with `blink.cmp` and snippets via `friendly-snippets`.
-  * **Fuzzy Finding:** Advanced searching with `telescope.nvim`.
-  * **File Explorer:** Tree-style file view with `nvim-tree.lua`.
-  * **Git Integration:** Includes `vim-fugitive`, `gitsigns.nvim`, and `diffview.nvim`.
-  * **Syntax Highlighting:** Via `nvim-treesitter`.
+- **LSP:** Integrated support via `nvim-lspconfig` and `mason.nvim` for easy server installation.
+- **Completion:** Fast autocompletion with `blink.cmp` and snippets via `friendly-snippets`.
+- **Fuzzy Finding:** Advanced searching with `telescope.nvim`.
+- **File Explorer:** Tree-style file view with `nvim-tree.lua`.
+- **Git Integration:** Includes `vim-fugitive`, `gitsigns.nvim`, and `diffview.nvim`.
+- **Syntax Highlighting:** Via `nvim-treesitter`.
 
 ### UI Enhancements
 
-  * **Statusline:** `lualine.nvim`.
-  * **Icons:** `nvim-web-devicons`.
-  * **Theme:** `onedarkpro.nvim`.
-  * **Keymap Help:** `which-key.nvim`.
-  * **Diagnostics Display:** `trouble.nvim`.
-  * **Winbar:** `barbecue.nvim`.
-  * **Misc UI:** `snacks.nvim`.
+- **Statusline:** `lualine.nvim`.
+- **Icons:** `nvim-web-devicons`.
+- **Theme:** `onedarkpro.nvim`.
+- **Keymap Help:** `which-key.nvim`.
+- **Diagnostics Display:** `trouble.nvim`.
+- **Winbar:** `barbecue.nvim`.
+- **Misc UI:** `snacks.nvim`.
 
 ### Editing Tools
 
-  * Commenting: `Comment.nvim`
-  * Motions: `leap.nvim`
-  * Auto-save: `vim-auto-save`
-  * TODO Highlighting: `todo-comments.nvim`
-  * Marks: `vim-signature`
-  * Floating terminal: `vim-floaterm`
-  * Tmux navigation: `vim-tmux-navigator`
+- Commenting: `Comment.nvim`
+- Motions: `leap.nvim`
+- Auto-save: `vim-auto-save`
+- TODO Highlighting: `todo-comments.nvim`
+- Marks: `vim-signature`
+- Floating terminal: `vim-floaterm`
+- Tmux navigation: `vim-tmux-navigator`
 
 ### Language Specific
 
-  * LaTeX: `vimtex`
+- LaTeX: `vimtex`
 
 ### AI Tools
 
-  * `avante.nvim` with OpenAI integration
+- `avante.nvim` with OpenAI integration
 
 ## Prerequisites
 
-  * **Neovim:** Version 0.11+ (older versions will not work)
-  * **Git:** For cloning and plugin management
-  * **Nerd Font:** For icon display
-  * *(Optional)* **Build Tools:** `make`, C compiler (for Treesitter and LSP)
-  * *(Optional)* **OpenAI Key:** For `avante.nvim`
+- **Neovim:** Version 0.11+ (older versions will not work)
+- **Git:** For cloning and plugin management
+- **Nerd Font:** For icon display
+- *(Optional)* **Build Tools:** `make`, C compiler (for Treesitter and LSP)
+- *(Optional)* **OpenAI Key:** For `avante.nvim`
 
 ## Keymaps
 
 ### General
 
-  * `<leader>`: Open `which-key` menu
-  * `<C-p>`: Find files (Telescope)
-  * `<C-r>`: Live grep (Telescope)
-  * `<C-b>` / `<C-n>`: Open buffers (Telescope)
-  * `<C-t>`: Toggle file tree (NvimTree)
-  * `<leader>t`: Toggle Trouble
-  * `<leader>st`: Toggle Symbols Outline
-  * `<F7>` / `<F12>`: Floaterm control
-  * `<leader>]`: Trigger Gen (Ollama)
-  * `<leader>m`: Render file
-  * `<leader><F10>`: Run file
+- `<leader>`: Open `which-key` menu
+- `<C-p>`: Find files (Telescope)
+- `<C-r>`: Live grep (Telescope)
+- `<C-b>` / `<C-n>`: Open buffers (Telescope)
+- `<C-t>`: Toggle file tree (NvimTree)
+- `<leader>t`: Toggle Trouble
+- `<leader>st`: Toggle Symbols Outline
+- `<F7>` / `<F12>`: Floaterm control
+- `<leader>]`: Trigger Gen (Ollama)
+- `<leader>m`: Render file
+- `<leader><F10>`: Run file
 
 ### LSP
 
-  * `gd`: Go to definition
-  * `gD`: Go to declaration
-  * `K`: Hover doc
-  * `gi`: Go to implementation
-  * `gr`: Find references
-  * `grn`: Rename
-  * `<leader><F2>`: Format
+- `gd`: Go to definition
+- `gD`: Go to declaration
+- `K`: Hover doc
+- `gi`: Go to implementation
+- `gr`: Find references
+- `grn`: Rename
+- `<leader><F2>`: Format
 
 ### Git
 
-  * `ghn` / `ghp`: Next/Previous hunk
-  * `ghP`: Preview hunk
-  * `ghc` / `ghC`: Stage/Unstage hunk
-  * `<leader>gc`: Commit file
-  * `<leader>gp` / `gP`: Push/Pull
-  * `<leader>gL`: Git log
-  * `<leader>gS`: Git status
-  * `<leader>do` / `dc`: Diffview open/close
+- `ghn` / `ghp`: Next/Previous hunk
+- `ghP`: Preview hunk
+- `ghc` / `ghC`: Stage/Unstage hunk
+- `<leader>gc`: Commit file
+- `<leader>gp` / `gP`: Push/Pull
+- `<leader>gL`: Git log
+- `<leader>gS`: Git status
+- `<leader>do` / `dc`: Diffview open/close
 
 ## Customization
 
-Create `lua/custom.lua`:
+Edit `lua/plugins/custom.lua`:
 
 ```lua
 return {
-  -- Example:
-  -- {
-  --   'user/plugin',
-  --   config = function()
-  --     -- Setup code here
-  --   end,
-  -- },
+-- Example:
+-- {
+--   'user/plugin',
+--   config = function()
+--     -- Setup code here
+--   end,
+-- },
 
-  -- vim.opt.relativenumber = false
+-- vim.opt.relativenumber = false
 }
-```
-
-Then require it at the end of `lua/plugins/init.lua`:
-
-```lua
-require('custom')
 ```
 
 ## Acknowledgements
@@ -158,4 +154,4 @@ require('custom')
 ## Performance
 
 ![assets/tf\_edit.png](about:sanitized)
-    - startup time when editing [this file](https://www.google.com/search?q=https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/model.cc)
+- startup time when editing [this file](https://www.google.com/search?q=https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/model.cc)
