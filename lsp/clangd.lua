@@ -5,9 +5,7 @@ end
 default_config = {
     cmd = { exe_name('clangd'), '--clang-tidy' },
     filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-    root_dir = function(fname)
-        return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
-    end,
+    root_markers = { '.git', '.clang-format', 'CMakeLists.txt', 'Makefile' },
 }
 
 return default_config
