@@ -29,9 +29,9 @@ local CENTER_ENTRIES = {
 
 local nvim_ver = vim.version()
 local nvim_version_str = string.format("neovim v%d.%d.%d", nvim_ver.major, nvim_ver.minor, nvim_ver.patch)
-local footer_left_padding = string.rep(" ", #nvim_version_str - 11)
+local mach_version_str = "mach-nvim 1.2.0"
 
-local FOOTER_CONTENT = { footer_left_padding .. "run :h mach   mach-nvim v1.1.0   " .. nvim_version_str }
+local FOOTER_CONTENT = { "run :h mach   " .. mach_version_str  .. "   " .. nvim_version_str }
 
 local function padded_layout()
   local win_height = vim.api.nvim_win_get_height(0)
