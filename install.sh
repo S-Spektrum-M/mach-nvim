@@ -9,9 +9,104 @@ NVIM_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/nvim"
 NVIM_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/nvim"
 REQUIRED_NVIM_VERSION="0.9.0" # Set your minimum required version
 
+# Default values for flags
+INSTALL_METHOD=""
+REMOVE_GIT=false
+INSTALL_MACH_UPDATE=false
+ADD_TO_PATH=false
+INITIALIZE_PLUGINS=false
+NON_INTERACTIVE=false
+
 # Define color codes
 WHITE='\033[1;37m'
 NC='\033[0m' # No Color
+
+# Function to display help
+show_help() {
+    cat << EOF
+Usage: $0 [OPTIONS]
+
+Neovim Installation and Configuration Setup
+
+Options:
+    -h, --help                  Show this help message
+    -n, --non-interactive       Run in non-interactive mode (requires other options to be set)
+    -m, --method [SOURCE|PKG|SKIP]
+                                Installation method:
+                                  SOURCE = Build from source
+                                  PKG = Use package manager
+                                  SKIP = Skip Neovim installation
+    -g, --git-keep              Keep .git directory (default is to remove it)
+    -u, --update-tool           Install mach-update tool
+    -p, --path                  Add mach-update to PATH
+    -i, --init                  Initialize plugins after installation
+
+Examples:
+    # Interactive mode (default)
+    $0
+
+    # Non-interactive: Install from package manager, no git, install update tool, add to path, initialize plugins
+    $0 -n -m PKG -u -p -i
+
+    # Non-interactive: Skip Neovim installation, keep git, don't install update tool
+    $0 -n -m SKIP -g
+EOF
+    exit 0
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_help
+            ;;
+        -n|--non-interactive)
+            NON_INTERACTIVE=true
+            shift
+            ;;
+        -m|--method)
+            if [[ -z "$2" || "$2" =~ ^- ]]; then
+                echo "Error: --method requires an argument (SOURCE, PKG, or SKIP)"
+                exit 1
+            fi
+            INSTALL_METHOD=$(echo "$2" | tr '[:lower:]' '[:upper:]')
+            shift 2
+            ;;
+        -g|--git-keep)
+            REMOVE_GIT=false
+            shift
+            ;;
+        -u|--update-tool)
+            INSTALL_MACH_UPDATE=true
+            shift
+            ;;
+        -p|--path)
+            ADD_TO_PATH=true
+            shift
+            ;;
+        -i|--init)
+            INITIALIZE_PLUGINS=true
+            shift
+            ;;
+        *)
+     echo "Unknown option: $1"
+            show_help
+            ;;
+    esac
+done
+
+# Validate non-interactive mode settings
+if [[ "$NON_INTERACTIVE" == true ]]; then
+    if [[ -z "$INSTALL_METHOD" ]]; then
+        echo "Error: Non-interactive mode requires --method to be specified."
+        exit 1
+    fi
+
+    if [[ "$INSTALL_METHOD" != "SOURCE" && "$INSTALL_METHOD" != "PKG" && "$INSTALL_METHOD" != "SKIP" ]]; then
+        echo "Error: Invalid method '$INSTALL_METHOD'. Must be SOURCE, PKG, or SKIP."
+        exit 1
+    fi
+fi
 
 echo "=== Neovim Installation and Configuration Setup ==="
 
@@ -44,28 +139,46 @@ install_neovim() {
     if ! check_nvim_version; then
         echo "Neovim not found or version too old."
 
-        echo -e "${WHITE}Please select an installation method:${NC}"
-        PS3=$'\033[1;37m> \033[0m'
-        options=("Build from source" "Use package manager" "Skip installation")
-        select opt in "${options[@]}"; do
-            case $opt in
-                "Build from source")
+        if [[ "$NON_INTERACTIVE" == true ]]; then
+            case "$INSTALL_METHOD" in
+                "SOURCE")
                     install_from_source
-                    break
                     ;;
-                "Use package manager")
+                "PKG")
                     install_from_package_manager
-                    break
                     ;;
-                "Skip installation")
-                    echo "Skipping Neovim installation."
-                    break
+                "SKIP")
+                    echo "Skipping Neovim installation (as requested)."
                     ;;
                 *)
-                    echo "Invalid option $REPLY"
+                    echo "Invalid installation method: $INSTALL_METHOD"
+                    exit 1
                     ;;
             esac
-        done
+        else
+            echo -e "${WHITE}Please select an installation method:${NC}"
+            PS3=$'\033[1;37m> \033[0m'
+            options=("Build from source" "Use package manager" "Skip installation")
+            select opt in "${options[@]}"; do
+                case $opt in
+                    "Build from source")
+                        install_from_source
+                        break
+                        ;;
+                    "Use package manager")
+                        install_from_package_manager
+                        break
+                        ;;
+                    "Skip installation")
+                        echo "Skipping Neovim installation."
+                        break
+                        ;;
+                    *)
+                        echo "Invalid option $REPLY"
+                        ;;
+                esac
+            done
+        fi
     else
         echo "Neovim is already installed with a compatible version."
     fi
@@ -90,11 +203,15 @@ install_from_source() {
         brew install ninja libtool automake cmake pkg-config gettext curl
     else
         echo "Could not detect package manager. Please install build dependencies manually."
-        echo -e "${WHITE}Continue anyway? [y/N]${NC} "
-        read -p $'\033[1;37m> \033[0m' -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            return 1
+        if [[ "$NON_INTERACTIVE" == false ]]; then
+            echo -e "${WHITE}Continue anyway? [y/N]${NC} "
+            read -p $'\033[1;37m> \033[0m' -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                return 1
+            fi
+        else
+            echo "Continuing anyway in non-interactive mode."
         fi
     fi
 
@@ -179,12 +296,22 @@ install_config() {
     # Clone configuration
     git clone https://github.com/S-Spektrum-M/mach-nvim "$NVIM_CONFIG_DIR"
 
-    # Ask about removing .git
-    echo -e "${WHITE}Would you like to remove the .git folder? [Y/n]${NC} "
-    read -p $'\033[1;37m> \033[0m' choice_git
-    if [[ -z "$choice_git" || "$choice_git" =~ ^[Yy] ]]; then
+    # Handle .git directory
+    local remove_git=true
+
+    if [[ "$NON_INTERACTIVE" == true ]]; then
+        remove_git="$REMOVE_GIT"
+    else
+        echo -e "${WHITE}Would you like to remove the .git folder? [Y/n]${NC} "
+        read -p $'\033[1;37m> \033[0m' choice_git
+        [[ -z "$choice_git" || "$choice_git" =~ ^[Yy] ]] && remove_git=true || remove_git=false
+    fi
+
+    if [[ "$remove_git" == true ]]; then
         echo "Removing .git folder..."
         rm -rf "$NVIM_CONFIG_DIR/.git"
+    else
+        echo "Keeping .git folder for future updates."
     fi
 
     echo "Configuration successfully installed."
@@ -192,9 +319,19 @@ install_config() {
 
 # Install mach-update to PATH
 install_mach_update() {
-    echo -e "${WHITE}Would you like to install 'mach-update' to your PATH? [y/N]${NC} "
-    read -p $'\033[1;37m> \033[0m' choice_mach
-    if [[ "$choice_mach" =~ ^[Yy] ]]; then
+    local install_update=false
+    local add_to_path=false
+
+    if [[ "$NON_INTERACTIVE" == true ]]; then
+        install_update="$INSTALL_MACH_UPDATE"
+        add_to_path="$ADD_TO_PATH"
+    else
+        echo -e "${WHITE}Would you like to install 'mach-update' to your PATH? [y/N]${NC} "
+        read -p $'\033[1;37m> \033[0m' choice_mach
+        [[ "$choice_mach" =~ ^[Yy] ]] && install_update=true
+    fi
+
+    if [[ "$install_update" == true ]]; then
         echo "Installing mach-update to PATH..."
 
         # Create the mach-update script in the right location
@@ -262,20 +399,29 @@ EOF
         # Check if ~/.local/bin is in PATH, if not suggest adding it
         if [[ ":$PATH:" != *":$LOCAL_BIN_DIR:"* ]]; then
             echo "Notice: $LOCAL_BIN_DIR is not in your PATH."
-            echo "To add it, run:"
-            echo "  echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc"
-            echo "  source ~/.bashrc"
 
-            # Ask if user wants to add it automatically
-            echo -e "${WHITE}Would you like to add it automatically? [y/N]${NC} "
-            read -p $'\033[1;37m> \033[0m' choice_path
-            if [[ "$choice_path" =~ ^[Yy] ]]; then
+            if [[ "$NON_INTERACTIVE" == true ]]; then
+                if [[ "$ADD_TO_PATH" == true ]]; then
+                    add_to_path=true
+                fi
+            else
+                echo "To add it, run:"
+                echo "  echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc"
+                echo "  source ~/.bashrc"
+
+                # Ask if user wants to add it automatically
+                echo -e "${WHITE}Would you like to add it automatically? [y/N]${NC} "
+                read -p $'\033[1;37m> \033[0m' choice_path
+                [[ "$choice_path" =~ ^[Yy] ]] && add_to_path=true
+            fi
+
+            if [[ "$add_to_path" == true ]]; then
                 SHELL_RC=""
                 if [[ "$SHELL" == *"zsh"* ]]; then
                     SHELL_RC="$HOME/.zshrc"
                 elif [[ "$SHELL" == *"bash"* ]]; then
                     SHELL_RC="$HOME/.bashrc"
-                fi
+     fi
 
                 if [[ -n "$SHELL_RC" ]]; then
                     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
@@ -318,11 +464,18 @@ install_config
 install_mach_update
 
 # First run initialization
-echo -e "${WHITE}Would you like to run Neovim now to initialize plugins? [y/N]${NC} "
-read -p $'\033[1;37m> \033[0m' choice_run
-if [[ "$choice_run" =~ ^[Yy] ]]; then
-    initialize_plugins
-    echo "You can now use Neovim with your new configuration."
+if [[ "$NON_INTERACTIVE" == true ]]; then
+    if [[ "$INITIALIZE_PLUGINS" == true ]]; then
+        initialize_plugins
+        echo "Plugins initialized. You can now use Neovim with your new configuration."
+    fi
+else
+    echo -e "${WHITE}Would you like to run Neovim now to initialize plugins? [y/N]${NC} "
+    read -p $'\033[1;37m> \033[0m' choice_run
+    if [[ "$choice_run" =~ ^[Yy] ]]; then
+        initialize_plugins
+        echo "You can now use Neovim with your new configuration."
+    fi
 fi
 
 echo "Setup complete! Your Neovim is ready to use."
