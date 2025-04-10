@@ -96,12 +96,25 @@ install_from_source() {
     local temp_dir=$(mktemp -d)
     git clone https://github.com/neovim/neovim.git "$temp_dir" --depth=1 --branch=stable
 
-    echo "Building Neovim from source..."
+    echo "Building Neovim from source (this may take a while)..."
     cd "$temp_dir"
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
+
+    # Suppress make output but show a spinner to indicate progress
+    echo -n "Building "
+    make CMAKE_BUILD_TYPE=RelWithDebInfo > /dev/null 2>&1 &
+    pid=$!
+    spin='-\|/'
+    i=0
+    while kill -0 $pid 2>/dev/null; do
+        i=$(( (i+1) % 4 ))
+        printf "\rBuilding %c " "${spin:$i:1}"
+        sleep .1
+    done
+    printf "\rBuild complete!    \n"
+    wait $pid || { echo "Build failed"; exit 1; }
 
     echo "Installing Neovim..."
-    sudo make install
+    sudo make install > /dev/null 2>&1
 
     cd - > /dev/null
     rm -rf "$temp_dir"
