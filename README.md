@@ -1,36 +1,41 @@
-# Mach - A Neovim Configuration
+#  Mach - A Neovim Distribution
 
-A modern, Neovim configuration commited to creating a productive development
-environment with as little overhead over vim as possible.
+A modern Neovim distribution focused on a productive development environment
+with minimal overhead.
 
-## Installation
+##  Installation
 
 ```bash
-wget https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh && bash install.sh
-```
+wget https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh
+chmod +x install.sh
+# use the following for automated install
+./install.sh -nupig -m SOURCE
+# use the following for Interactive install
+./install.sh
+````
 
 ## Features
 
-This configuration comes pre-loaded with plugins managed by [lazy.nvim](https://github.com/folke/lazy.nvim), including:
+This configuration uses [lazy.nvim](https://github.com/folke/lazy.nvim) to manage plugins, and includes:
 
 ### Core Functionality
 
 - **LSP:** Integrated support via `nvim-lspconfig` and `mason.nvim` for easy server installation.
-- **Completion:** Fast autocompletion using `blink.cmp` with snippet support via `friendly-snippets`.
+- **Completion:** Fast autocompletion with `blink.cmp` and snippets via `friendly-snippets`.
 - **Fuzzy Finding:** Advanced searching with `telescope.nvim`.
 - **File Explorer:** Tree-style file view with `nvim-tree.lua`.
-- **Git Integration:** Tools like `vim-fugitive`, `gitsigns.nvim`, and `diffview.nvim`.
+- **Git Integration:** Includes `vim-fugitive`, `gitsigns.nvim`, and `diffview.nvim`.
 - **Syntax Highlighting:** Via `nvim-treesitter`.
 
 ### UI Enhancements
 
-- **Statusline:** Powered by `lualine.nvim`.
-- **Icons:** Through `nvim-web-devicons`.
+- **Statusline:** `lualine.nvim`.
+- **Icons:** `nvim-web-devicons`.
 - **Theme:** `onedarkpro.nvim`.
-- **Keymap Help:** With `which-key.nvim`.
-- **Diagnostics Display:** Using `trouble.nvim`.
+- **Keymap Help:** `which-key.nvim`.
+- **Diagnostics Display:** `trouble.nvim`.
 - **Winbar:** `barbecue.nvim`.
-- **Misc UI Enhancements:** From `snacks.nvim`.
+- **Misc UI:** `snacks.nvim`.
 
 ### Editing Tools
 
@@ -39,9 +44,6 @@ This configuration comes pre-loaded with plugins managed by [lazy.nvim](https://
 - Auto-save: `vim-auto-save`
 - TODO Highlighting: `todo-comments.nvim`
 - Marks: `vim-signature`
-
-### Terminal
-
 - Floating terminal: `vim-floaterm`
 - Tmux navigation: `vim-tmux-navigator`
 
@@ -51,16 +53,15 @@ This configuration comes pre-loaded with plugins managed by [lazy.nvim](https://
 
 ### AI Tools
 
-- `avante.nvim` with Ollama integration
+- `avante.nvim` with OpenAI integration
 
 ## Prerequisites
 
-- **Neovim:** Version 0.11+ (older versions may work but aren't supported)
+- **Neovim:** Version 0.11+ (older versions will not work)
 - **Git:** For cloning and plugin management
-- **Nerd Font:** Required for proper icon display
-- *(Optional)* **Build Tools:** `make`, C compiler, etc. for Treesitter and LSP
+- **Nerd Font:** For icon display
+- *(Optional)* **Build Tools:** `make`, C compiler (for Treesitter and LSP)
 - *(Optional)* **OpenAI Key:** For `avante.nvim`
-
 
 ## Keymaps
 
@@ -101,26 +102,20 @@ This configuration comes pre-loaded with plugins managed by [lazy.nvim](https://
 
 ## Customization
 
-Create `lua/custom.lua`:
+Edit `lua/plugins/custom.lua`:
 
 ```lua
 return {
-  -- Example:
-  -- {
-  --   'user/plugin',
-  --   config = function()
-  --     -- Setup code here
-  --   end,
-  -- },
+-- Example:
+-- {
+--   'user/plugin',
+--   config = function()
+--     -- Setup code here
+--   end,
+-- },
 
-  -- vim.opt.relativenumber = false
+-- vim.opt.relativenumber = false
 }
-```
-
-Then require it at the end of `lua/plugins/init.lua`:
-
-```lua
-require('custom')
 ```
 
 ## Acknowledgements
@@ -128,35 +123,36 @@ require('custom')
 ### Plugins
 
 | Plugin | Description |
-|--------|-------------|
-| [lazy.nvim](https://github.com/folke/lazy.nvim) | Startup plugin manager |
-| [avante.nvim](https://github.com/yetone/avante.nvim) | AI integration |
-| [barbecue.nvim](https://github.com/utilyre/barbecue.nvim) | Winbar component |
-| [blink.cmp](https://github.com/Saghen/blink.cmp) | Completion engine |
-| [Comment.nvim](https://github.com/numToStr/Comment.nvim) | Commenting support |
-| [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | Icons for UI |
-| [diffview.nvim](https://github.com/sindrets/diffview.nvim) | Git diffs UI |
-| [vim-floaterm](https://github.com/voldikss/vim-floaterm) | Floating terminal |
-| [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git commands in Neovim |
-| [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git signs & blame |
-| [leap.nvim](https://github.com/ggandor/leap.nvim) | Motion plugin |
-| [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Statusline |
-| [mason.nvim](https://github.com/williamboman/mason.nvim) | LSP installer |
-| [symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim) | Symbol tree |
-| [vim-auto-save](https://github.com/907th/vim-auto-save) | Auto-save buffer |
-| [vim-signature](https://github.com/kshenoy/vim-signature) | Mark indicators |
-| [snacks.nvim](https://github.com/folke/snacks.nvim) | UI/UX enhancements |
-| [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Finder engine |
-| [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) | Tmux integration |
-| [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) | TODO highlighting |
-| [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) | File tree view |
-| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting |
-| [trouble.nvim](https://github.com/folke/trouble.nvim) | Diagnostics panel |
-| [rainbow-delimiters.nvim](https://github.com/HiPhish/rainbow-delimiters.nvim) | Rainbow parens |
-| [vimtex](https://github.com/lervag/vimtex) | LaTeX support |
-| [which-key.nvim](https://github.com/folke/which-key.nvim) | Keymap hint UI |
-| [onedarkpro.nvim](https://github.com/olimorris/onedarkpro.nvim) | Colorscheme |
+|---|---|
+|   [lazy.nvim](https://github.com/folke/lazy.nvim) |   Startup plugin manager |
+|   [avante.nvim](https://github.com/yetone/avante.nvim) |   AI integration |
+|   [barbecue.nvim](https://github.com/utilyre/barbecue.nvim) |   Winbar component |
+|   [blink.cmp](https://github.com/Saghen/blink.cmp) |   Completion engine |
+|   [Comment.nvim](https://github.com/numToStr/Comment.nvim) |   Commenting support |
+|   [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) |   Icons for UI |
+|   [diffview.nvim](https://github.com/sindrets/diffview.nvim) |   Git diffs UI |
+|   [vim-floaterm](https://github.com/voldikss/vim-floaterm) |   Floating terminal |
+|   [vim-fugitive](https://github.com/tpope/vim-fugitive) |   Git commands in Neovim |
+|   [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) |   Git signs & blame |
+|   [leap.nvim](https://github.com/ggandor/leap.nvim) |   Motion plugin |
+|   [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) |   Statusline |
+|   [mason.nvim](https://github.com/williamboman/mason.nvim) |   LSP installer |
+|   [symbols-outline.nvim](https://github.com/simrat39/symbols-outline.nvim) |   Symbol tree |
+|   [vim-auto-save](https://github.com/907th/vim-auto-save) |   Auto-save buffer |
+|   [vim-signature](https://github.com/kshenoy/vim-signature) |   Mark indicators |
+|   [snacks.nvim](https://github.com/folke/snacks.nvim) |   UI/UX enhancements |
+|   [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) |   Finder engine |
+|   [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) |   Tmux integration |
+|   [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) |   TODO highlighting |
+|   [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) |   File tree view |
+|   [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) |   Syntax highlighting |
+|   [trouble.nvim](https://github.com/folke/trouble.nvim) |   Diagnostics panel |
+|   [rainbow-delimiters.nvim](https://github.com/HiPhish/rainbow-delimiters.nvim) |   Rainbow parens |
+|   [vimtex](https://github.com/lervag/vimtex) |   LaTeX support |
+|   [which-key.nvim](https://github.com/folke/which-key.nvim) |   Keymap hint UI |
+|   [onedarkpro.nvim](https://github.com/olimorris/onedarkpro.nvim) |   Colorscheme |
 
 ## Performance
-![assets/tf_edit.png](assets/tf_edit.png)
-- startup time when editing [this file](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/model.cc)
+
+![assets/tf\_edit.png](about:sanitized)
+- startup time when editing [this file](https://www.google.com/search?q=https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/framework/model.cc)

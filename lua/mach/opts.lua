@@ -42,5 +42,6 @@ opt.conceallevel = 2
 wopt.spell = false
 bopt.spelllang = "en_us"
 
-vim.g.mapleader = " "
+opt.laststatus = 3
 
+vim.g.mapleader = " "
