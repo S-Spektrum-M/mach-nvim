@@ -1,12 +1,12 @@
 local nvim_ver = vim.version()
+local mach_ver = "1.2.1"
 
 local HEADER_CONTENT = {
     [[                        █▀▄▀█ ▄▀█ █▀▀ █░█                        ]],
     [[                 .      █░▀░█ █▀█ █▄▄ █▀█      .                 ]],
     [[                //                             \\                ]],
-    [[               //             1.2.0             \\               ]],
-    ("              //        neovim     %d.%d.%d        \\\\              "):format(nvim_ver.major, nvim_ver.minor,
-        nvim_ver.patch),
+    ("               //             %s             \\\\               "):format(mach_ver),
+    ("              //        neovim     %d.%d.%d        \\\\              "):format(nvim_ver.major, nvim_ver.minor, nvim_ver.patch),
     [[             //                _._                \\             ]],
     [[          .---.              .//|\\.              .---.          ]],
     [[________ / .-. \_________..-~ _.-._ ~-..________ / .-. \_________]],
