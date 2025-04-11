@@ -2,7 +2,6 @@ local function exe_name(lsp_name)
     return vim.fn.stdpath('data') .. '/mason/bin/' .. lsp_name
 end
 
--- config from: u/Reid720 on r/neovim
 local default_config = {
     cmd = { exe_name("lua-language-server") },
     filetypes = { "lua" },

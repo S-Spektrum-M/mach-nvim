@@ -2,7 +2,7 @@ local function exe_name(lsp_name)
     return vim.fn.stdpath('data') .. '/mason/bin/' .. lsp_name
 end
 
-default_config = {
+local default_config = {
     cmd = { exe_name('taplo'), 'lsp', 'stdio' },
     filetypes = { 'toml' },
     root_dir = function(fname)

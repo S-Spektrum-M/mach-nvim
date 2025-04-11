@@ -510,6 +510,34 @@ EOF
     fi
 }
 
+install_lsp_install_sources() {
+    if command -v apt-get >/dev/null 2>&1; then
+        sudo apt-get update > /dev/null 2>&1
+        sudo apt-get install -y python3 xz npm go > /dev/null 2>&1
+    # Check if we're on Fedora/RHEL/CentOS
+    elif command -v dnf >/dev/null 2>&1; then
+        sudo dnf -y install python3 xz npm go  > /dev/null 2>&1
+    # Check if we're on Arch
+    elif command -v pacman >/dev/null 2>&1; then
+        sudo pacman -S python3 xz npm go > /dev/null 2>&1
+    # macOS with Homebrew
+    elif command -v brew >/dev/null 2>&1; then
+        brew install python3 xz npm go > /dev/null 2>&1
+    else
+        echo "Could not detect package manager. Please install build lsp install sources manually."
+        if [[ "$NON_INTERACTIVE" == false ]]; then
+            echo -e "${WHITE}Continue anyway? [y/N]${NC} "
+            read -p $'\033[1;37m> \033[0m' -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                return 1
+            fi
+        else
+            echo "Continuing anyway in non-interactive mode."
+        fi
+    fi
+}
+
 # Function to initialize plugins with suppressed output
 initialize_plugins() {
     echo "Initializing plugins (this may take a moment)..."
@@ -526,6 +554,19 @@ initialize_plugins() {
     printf "\rSync complete!    \n"
     wait $pid || { echo "Plugin initialization failed"; return 1; }
     echo "Plugins initialized successfully."
+
+    echo "Installing LSPs (this may take a moment)..."
+    echo -n "Installing "
+    nvim --headless "+MasonInstall bash-language-server clangd deno gopls json-lsp lua-language-server neocmakelsp python-lsp-server rust-analyzer taplo texlab yaml zls" +qa > /dev/null 2>&1 &
+    pid=$!
+    spin='-\|/'
+    i=0
+    while kill -0 $pid 2>/dev/null; do
+        i=$(( (i+1) % 4 ))
+        printf "\rInstalling %c " "${spin:$i:1}"
+        sleep .1
+    done
+    printf "\rInstallation complete!    \n"
 }
 
 # Main execution
