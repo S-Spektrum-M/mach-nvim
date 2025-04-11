@@ -1,9 +1,7 @@
 local winbar_symbol = function()
     if vim.lsp.buf_is_attached(0) and require('nvim-navic').is_available() then
         local loc = require('nvim-navic').get_location()
-        local padding = string.rep(' ', (vim.api.nvim_win_get_width(0) - #loc) / 2)
-        -- autocenter
-        return padding .. loc .. padding
+        return loc
     end
 
     return ''
@@ -33,13 +31,11 @@ return {
                         'branch',
                         'diff'
                     },
+                    lualine_c = { winbar_symbol },
                     lualine_z = {
                         'progress',
                         { 'location', separator = { right = '' }, left_padding = 2 },
                     },
-                },
-                winbar = {
-                    lualine_c = { winbar_symbol },
                 },
             })
         end, 50)
