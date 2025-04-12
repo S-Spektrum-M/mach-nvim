@@ -78,7 +78,7 @@ local snacks_statuscolumn = {
 }
 
 local snacks_picker = {
-    layout = 'my_telescope_top',
+    layout = 'telescope',
     layouts = {
         my_telescope_top = {
             layout = {
