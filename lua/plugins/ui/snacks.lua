@@ -1,5 +1,15 @@
+-- MIT License – see LICENSE or https://opensource.org/licenses/MIT
+
 local nvim_ver = vim.version()
 local mach_ver = "1.2.1"
+
+--[[
+ASCII art from: asciiart.website/index.php?art=transportation/airplanes
+Retrieved on: [2025-04-11]
+No explicit license or author information was provided.
+If you are the original artist and want this removed or credited differently,
+please reach out.
+]]
 
 local HEADER_CONTENT = {
     [[                        █▀▄▀█ ▄▀█ █▀▀ █░█                        ]],
