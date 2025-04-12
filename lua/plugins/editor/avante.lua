@@ -26,7 +26,7 @@ return {
             enable_cursor_planning_mode = false,         -- Whether to enable Cursor Planning Mode. Default to false.
             enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
         },
-        file_selector = { provider = "native", },
+        file_selector = { provider = "snacks", },
         windows = {
             position = "right", -- the position of the sidebar
             wrap = true,        -- similar to vim.o.wrap
@@ -42,9 +42,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
         "nvim-lua/plenary.nvim",
         "MunifTanjim/nui.nvim",
-        --- The below dependencies are optional,
-        "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-        "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+        "nvim-tree/nvim-web-devicons",
         {
             "HakonHarnes/img-clip.nvim",
             -- event = "VeryLazy",

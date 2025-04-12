@@ -79,12 +79,6 @@ Copyright (c) 2023 hedy
 Copyright (c) 2021-2023 Simrat
 see: https://github.com/hedyhli/outline.nvim
 
-### telescope.nvim
-<!-- Use snacks-picker once avante supports it -->
-License: MIT
-Copyright (c) 2020-2021 nvim-telescope
-see: https://github.com/nvim-telescope/telescope.nvim
-
 ### todo-comments.nvim
 License: Apache 2.0
 Copyright not specified

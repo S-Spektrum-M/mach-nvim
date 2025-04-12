@@ -6,7 +6,6 @@ local opts_silent = { noremap = true, silent = true }
 map("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
 map("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", opts)
 map("n", "gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", opts)
-map("n", "gr", "<CMD>Telescope lsp_references<CR>", opts)
 map("n", "gR", "<CMD>lua vim.lsp.buf.code_action({refactor})<CR>", opts)
 -- Misc
 map("n", "<Leader><F2>", ":lua vim.lsp.buf.format()", opts)

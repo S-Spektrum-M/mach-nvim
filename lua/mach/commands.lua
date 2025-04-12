@@ -2,9 +2,9 @@ local function cmd(alias, command)
     return vim.api.nvim_create_user_command(alias, command, {nargs = 0})
 end
 
-cmd("Projects", function () require("telescope.builtin").find_files({ cwd = "~/projects", prompt_title = "Projects", }) end)
-cmd("Papers", function () require("telescope.builtin").find_files({ cwd = "~/papers", prompt_title = "Papers", }) end)
-cmd("Notes", function () require("telescope.builtin").find_files({ cwd = "~/notes", prompt_title = "Notes", }) end)
+cmd("Projects", function () Snacks.picker.files({ cwd = "~/projects", title = "Projects", }) end)
+cmd("Papers", function () Snacks.picker.files({ cwd = "~/papers", title = "Papers", }) end)
+cmd("Papers", function () Snacks.picker.files({ cwd = "~/notes", title = "Notes", }) end)
 cmd("Update", function ()
     vim.cmd(":Lazy update")
     vim.cmd(":TSUpdate")
@@ -13,7 +13,7 @@ end)
 cmd("Chrome", function() vim.fn.system({"open", "https://www.google.com" }) end)
 cmd("TexRender", ":call RenderLaTexFast()")
 cmd("View", ":lua ViewPdf()")
-cmd("MMan", function () require("telescope.builtin").man_pages() end)
+cmd("Man", function () Snacks.picker.man() end)
 
 if os.getenv("TMUX") then
     cmd("Ports", "silent exec \"!tmux split-window -h 'lsof -i -P -n | grep LISTEN; read'\"")

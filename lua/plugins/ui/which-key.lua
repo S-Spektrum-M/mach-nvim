@@ -43,7 +43,6 @@ return {
                 -- triggers = {"<leader>"} -- or specifiy a list manually
                 -- list of triggers, where WhichKey should not wait for timeoutlen and show immediately
                 -- disable the WhichKey popup for certain buf types and file types.
-                -- Disabled by default for Telescope
                 disable = {
                     buftypes = {},
                     filetypes = {},

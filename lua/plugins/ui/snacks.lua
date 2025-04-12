@@ -42,21 +42,14 @@ local snacks_dashboard = {
     autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
     -- These settings are used by some built-in sections
     preset = {
-        -- Defaults to a picker that supports `fzf-lua`, `telescope.nvim` and `mini.pick`
-        ---@type fun(cmd:string, opts:table)|nil
         pick = nil,
-        -- Used by the `keys` section to show keymaps.
-        -- Set your custom keymaps here.
-        -- When using a function, the `items` argument are the default keymaps.
-        ---@type snacks.dashboard.Item[]
         keys = {
             { icon = " ", desc = "New File", action = ":enew", key = "n" },
-            { icon = " ", desc = "Find File", action = ":Telescope find_files", key = "p" },
-            { icon = " ", desc = "Recent Files", action = ":Telescope oldfiles", key = "r" },
+            { icon = " ", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')", key = "p" },
+            { icon = " ", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')", key = "r" },
             { icon = "󰒲 ", desc = "Update", action = ":Update", key = "u" },
             { icon = " ", desc = "Quit", action = ":qa", key = "q" },
         },
-        -- Used by the `header` section
         header = header,
     },
     sections = {
@@ -83,7 +76,9 @@ local snacks_statuscolumn = {
     -- patterns to match Git signs
     git = { patterns = { "GitSign", "MiniDiffSign" }, },
     refresh = 100,
+}
 
+local snacks_picker = {
 }
 
 
@@ -98,8 +93,18 @@ return {
         input = { enabled = true },
         notifier = { enabled = true },
         quickfile = { enabled = true },
-        picker = { enabled = false },
+        picker = snacks_picker,
         statuscolumn = snacks_statuscolumn,
         words = { enabled = false },
+    },
+    keys = {
+        { "<C-p>",         function () Snacks.picker.files() end,           desc = "Find Files" },
+        { "<C-r>",         function () Snacks.picker.grep() end,           desc = "Live Grep" },
+        { "<C-b>",         function () Snacks.picker.buffers() end,              desc = "Buffers" },
+        { "<Leader><C-p>", function () Snacks.picker.commands() end,             desc = "Commands" },
+        { "<Leader>gl",    function () Snacks.picker.git_log() end,          desc = "Git Commits Log" },
+        { "<Leader>ds",    function () Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
+        { "gd",            function () Snacks.picker.lsp_definitions() end,      desc = "Go to Lsp Defintion" },
+
     },
 }

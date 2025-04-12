@@ -28,7 +28,7 @@ map("n", "gi", "<CMD>lua vim.lsp.buf.implementation()<CR>",
         desc = "Go to implementation",
     })
 
-map("n", "gr", "<CMD>Telescope lsp_references<CR>",
+map("n", "gr", function () Snacks.picker.lsp_references() end,
     {
         noremap = true,
         desc = "Go to References",
