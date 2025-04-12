@@ -1,10 +1,12 @@
-for _, plugin in ipairs({
+--[[ for _, plugin in ipairs(
+    {
   "gzip", "zipPlugin", "tarPlugin", "netrwPlugin", "matchit",
   "matchparen", "tutor", "spellfile_plugin", "tohtml",
   "man", "rplugin", "editorconfig",
-}) do
+}
+) do
   vim.g["loaded_" .. plugin] = 1
-end
+end ]]
 
 vim.cmd [[
     filetype plugin indent on
