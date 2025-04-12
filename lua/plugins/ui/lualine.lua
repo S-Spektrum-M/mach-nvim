@@ -1,10 +1,22 @@
-local winbar_symbol = function()
+local lsp_loc = function()
+    local file_name = vim.fn.expand('%')
+    local parts = {}
+    for part in string.gmatch(file_name, "[^/]+") do
+        table.insert(parts, part)
+    end
+    for i = 1, #parts - 1 do
+        parts[i] = parts[i]:sub(1, 1)
+    end
+    local file = table.concat(parts, "/")
+
     if vim.lsp.buf_is_attached(0) and require('nvim-navic').is_available() then
         local loc = require('nvim-navic').get_location()
-        return loc
+        if #loc ~= 0 then
+            return file .. " > " .. loc
+        end
     end
 
-    return ''
+    return file
 end
 
 return {
@@ -27,11 +39,10 @@ return {
                         'diagnostics',
                     },
                     lualine_b = {
-                        'filename',
                         'branch',
                         'diff'
                     },
-                    lualine_c = { winbar_symbol },
+                    lualine_c = { lsp_loc },
                     lualine_z = {
                         'progress',
                         { 'location', separator = { right = '' }, left_padding = 2 },
