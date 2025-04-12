@@ -63,6 +63,16 @@ local snacks_indent = {
     animate = { enabled = false },
 }
 
+local snacks_input = {
+    enabled = true,
+    char = "│",
+    win = {
+        relative = "cursor",
+        row = -3,
+        col = 0,
+    }
+}
+
 local snacks_statuscolumn = {
     -- default config but with open fold statuscolumn sign
     enabled = true,
@@ -103,7 +113,7 @@ return {
         bigfile = { enabled = true },
         dashboard = snacks_dashboard,
         indent = snacks_indent,
-        input = { enabled = true },
+        input = snacks_input,
         notifier = { enabled = true },
         quickfile = { enabled = true },
         picker = snacks_picker,
@@ -122,7 +132,7 @@ return {
         { "gd",            function() Snacks.picker.lsp_definitions() end,       desc = "Go to Lsp Defintion" },
         -- snacks terminal
         -- In my actual workflow if I ever need more than 1 terminal, I just use tmux
-        { '<F12>', function () Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
+        { '<F12>', function() Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
         },
     },
 }
