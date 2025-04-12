@@ -1,7 +1,10 @@
 -- MIT License – see LICENSE or https://opensource.org/licenses/MIT
 
 local nvim_ver = vim.version()
-local mach_ver = "1.2.1"
+local mach_major = 1
+local mach_minor = 2
+local mach_patch = 2
+local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
 
 --[[
 ASCII art from: asciiart.website/index.php?art=transportation/airplanes
