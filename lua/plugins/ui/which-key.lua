@@ -50,5 +50,5 @@ return {
             }
         )
     end,
-    keys = { "<leader>", "<ctrl>" }
+    keys = { "<leader>", "<ctrl>", "z" }
 }

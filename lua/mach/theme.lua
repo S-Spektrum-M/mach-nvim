@@ -1,9 +1,9 @@
 vim.opt.signcolumn    = "auto"
 vim.opt.termguicolors = true
 
-local FG              = "#56B6C2"
-local BG_darker       = "#000000"
-local BG              = "#111111"
+local FG              = vim.api.nvim_get_hl(0, { name = "Normal", }).fg
+local BG_darker       = vim.api.nvim_get_hl(0, { name = "NormalFloat", }).bg
+local BG              = vim.api.nvim_get_hl(0, { name = "Normal", }).bg
 
 -- structure:
 -- HighlightTable
@@ -21,6 +21,37 @@ local HighlightTable  = {
         StatusColumnBorder = { fg = "#363a4e", bg = "#22252A" },
         StatusColumnBuffer = { fg = "NONE", bg = "NONE" },
         StatusColumnBufferCursorLine = { fg = "NONE", bg = "#383746" }
+    },
+    Snacks = {
+        SnacksPicker = {
+            bg = BG_darker,
+            fg = FG,
+        },
+        SnacksPickerBorder = {
+            bg = BG_darker,
+            fg = BG_darker,
+        },
+        SnacksPickerInput = {
+            bg = prompt,
+        },
+        SnacksPickerInputTitle = {
+            bg = prompt,
+        },
+        SnacksPickerBoxTitle = {
+            bg = prompt,
+            fg = prompt
+        },
+        SnacksPickerBoxBorder = {
+            bg = prompt,
+            fg = prompt
+        },
+        SnacksPickerPreviewTitle = {
+            bg = BG_darker,
+            fg = BG_darker,
+        },
+        SnacksPickerInputBorder = {
+            bg = prompt,
+        },
     }
 }
 

@@ -1,9 +1,7 @@
 -- MIT License – see LICENSE or https://opensource.org/licenses/MIT
 
 local nvim_ver = vim.version()
-local mach_major = 1
-local mach_minor = 2
-local mach_patch = 2
+local mach_major, mach_minor, mach_patch = 1, 2, 3
 local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
 
 --[[
@@ -19,7 +17,8 @@ local HEADER_CONTENT = {
     [[                 .      █░▀░█ █▀█ █▄▄ █▀█      .                 ]],
     [[                //                             \\                ]],
     ("               //             %s             \\\\               "):format(mach_ver),
-    ("              //        neovim     %d.%d.%d        \\\\              "):format(nvim_ver.major, nvim_ver.minor, nvim_ver.patch),
+    ("              //        neovim     %d.%d.%d        \\\\              "):format(nvim_ver.major, nvim_ver.minor,
+        nvim_ver.patch),
     [[             //                _._                \\             ]],
     [[          .---.              .//|\\.              .---.          ]],
     [[________ / .-. \_________..-~ _.-._ ~-..________ / .-. \_________]],
@@ -79,6 +78,31 @@ local snacks_statuscolumn = {
 }
 
 local snacks_picker = {
+    layout = 'my_telescope_top',
+    layouts = {
+        my_telescope_top = {
+            layout = {
+                box = 'horizontal',
+                backdrop = false,
+                width = 0.8,
+                height = 0.9,
+                border = 'none',
+                {
+                    box = 'vertical',
+                    { win = 'input', height = 1,          border = 'rounded',   title = '{title} {live} {flags}', title_pos = 'center' },
+                    { win = 'list',  title = ' Results ', title_pos = 'center', border = 'rounded' },
+                },
+                {
+                    win = 'preview',
+                    title = '{preview:Preview}',
+                    width = 0.45,
+                    border = 'rounded',
+                    title_pos = 'center',
+                },
+            },
+        },
+    },
+
 }
 
 
@@ -98,13 +122,13 @@ return {
         words = { enabled = false },
     },
     keys = {
-        { "<C-p>",         function () Snacks.picker.files() end,           desc = "Find Files" },
-        { "<C-r>",         function () Snacks.picker.grep() end,           desc = "Live Grep" },
-        { "<C-b>",         function () Snacks.picker.buffers() end,              desc = "Buffers" },
-        { "<Leader><C-p>", function () Snacks.picker.commands() end,             desc = "Commands" },
-        { "<Leader>gl",    function () Snacks.picker.git_log() end,          desc = "Git Commits Log" },
-        { "<Leader>ds",    function () Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
-        { "gd",            function () Snacks.picker.lsp_definitions() end,      desc = "Go to Lsp Defintion" },
+        { "<C-p>",         function() Snacks.picker.files() end,                 desc = "Find Files" },
+        { "<C-r>",         function() Snacks.picker.grep() end,                  desc = "Live Grep" },
+        { "<C-b>",         function() Snacks.picker.buffers() end,               desc = "Buffers" },
+        { "<Leader><C-p>", function() Snacks.picker.commands() end,              desc = "Commands" },
+        { "<Leader>gl",    function() Snacks.picker.git_log() end,               desc = "Git Commits Log" },
+        { "<Leader>ds",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
+        { "gd",            function() Snacks.picker.lsp_definitions() end,       desc = "Go to Lsp Defintion" },
 
     },
 }
