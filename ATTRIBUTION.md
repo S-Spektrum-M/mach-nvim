@@ -94,11 +94,6 @@ License: MIT
 Copyright (c) 2013 Alexey Chernenkov
 see: https://github.com/907th/vim-auto-save
 
-### vim-floaterm
-License: MIT
-Copyright (c) 2019 voldkiss
-see: https://github.com/voldikss/vim-floaterm
-
 ### vim-fugitive
 License: Vim License
 Copyright (c) Tim Pope

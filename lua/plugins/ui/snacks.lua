@@ -79,30 +79,19 @@ local snacks_statuscolumn = {
 
 local snacks_picker = {
     layout = 'telescope',
-    layouts = {
-        my_telescope_top = {
-            layout = {
-                box = 'horizontal',
-                backdrop = false,
-                width = 0.8,
-                height = 0.9,
-                border = 'none',
-                {
-                    box = 'vertical',
-                    { win = 'input', height = 1,          border = 'rounded',   title = '{title} {live} {flags}', title_pos = 'center' },
-                    { win = 'list',  title = ' Results ', title_pos = 'center', border = 'rounded' },
-                },
-                {
-                    win = 'preview',
-                    title = '{preview:Preview}',
-                    width = 0.45,
-                    border = 'rounded',
-                    title_pos = 'center',
-                },
-            },
-        },
-    },
+    layouts = {},
 
+}
+
+local snacks_terminal = {
+    enabled = true,
+    win = {
+        style = "terminal",
+        position = "float",
+        width = 0.7,
+        height = 0.7,
+        border = "rounded",
+    },
 }
 
 
@@ -119,9 +108,11 @@ return {
         quickfile = { enabled = true },
         picker = snacks_picker,
         statuscolumn = snacks_statuscolumn,
+        terminal = snacks_terminal,
         words = { enabled = false },
     },
     keys = {
+        -- snacks picker
         { "<C-p>",         function() Snacks.picker.files() end,                 desc = "Find Files" },
         { "<C-r>",         function() Snacks.picker.grep() end,                  desc = "Live Grep" },
         { "<C-b>",         function() Snacks.picker.buffers() end,               desc = "Buffers" },
@@ -129,6 +120,9 @@ return {
         { "<Leader>gl",    function() Snacks.picker.git_log() end,               desc = "Git Commits Log" },
         { "<Leader>ds",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
         { "gd",            function() Snacks.picker.lsp_definitions() end,       desc = "Go to Lsp Defintion" },
-
+        -- snacks terminal
+        -- In my actual workflow if I ever need more than 1 terminal, I just use tmux
+        { '<F12>', function () Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
+        },
     },
 }

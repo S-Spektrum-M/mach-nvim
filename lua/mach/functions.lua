@@ -1,3 +1,23 @@
+function Render()
+    local ft = vim.bo.filetype
+    local filename = vim.fn.expand("%")
+    local filename_noext = vim.fn.expand("%:t:r")
+    local filename_ext = vim.fn.expand("%:t")
+
+    if ft == "tex" then
+        vim.cmd("call RenderLaTexFast()")
+    elseif ft == "plaintex" then
+        vim.cmd("call RenderLaTex()")
+    elseif ft == "markdown" then
+        Snacks.terminal.open("pandoc " .. filename_ext .. " -o " .. filename_noext .. ".pdf")
+        ViewPdf()
+    elseif ft == "html" then
+        vim.cmd("!open " .. filename_ext)
+    else
+        vim.cmd("echom \"unsupported filetype\"")
+    end
+end
+
 function RunFile()
     local ft = vim.bo.filetype
     local filename = vim.fn.expand("%")
@@ -5,23 +25,23 @@ function RunFile()
     local filename_ext = vim.fn.expand("%:t")
 
     if ft == "python" then
-        vim.cmd("FloatermNew --autoclose=0 python3 " .. filename)
+        Snacks.terminal.open("python3 " .. filename, { auto_close = false })
     elseif ft == "javascript" then
-        vim.cmd("FloatermNew --autoclose=0 node .")
+        Snacks.terminal.open("node .", { auto_close = false })
     elseif ft == "c" then
-        vim.cmd("FloatermNew --autoclose=0 clang " .. filename .. " -o " .. filename_noext .. " && ./" .. filename_noext)
+        Snacks.terminal.open("clang " .. filename .. " -o " .. filename_noext .. " && ./" .. filename_noext, { auto_close = false })
     elseif ft == "cpp" then
-        vim.cmd("FloatermNew --autoclose=0 g++ " .. filename .. " -o " .. filename_noext .. " --std=c++20 && ./" .. filename_noext)
+        Snacks.terminal.open("g++ " .. filename .. " -o " .. filename_noext .. " --std=c++20 && ./" .. filename_noext, { auto_close = false })
     elseif ft == "typescript" then
-        vim.cmd("FloatermNew --autoclose=0 tsc " .. filename .. " && node " .. filename_noext .. ".js")
+        Snacks.terminal.open("tsc " .. filename .. " && node " .. filename_noext .. ".js", { auto_close = false })
     elseif ft == "java" then
-        vim.cmd("FloatermNew --autoclose=0 javac " .. filename_ext .. " && java " .. filename_noext)
+        Snacks.terminal.open("javac " .. filename_ext .. " && java " .. filename_noext, { auto_close = false })
     elseif ft == "go" then
-        vim.cmd("FloatermNew --autoclose=0 go run " .. filename)
+        Snacks.terminal.open("go run " .. filename, { auto_close = false })
     elseif ft == "lua" then
-        vim.cmd("FloatermNew --autoclose=0 lua " .. filename)
+        Snacks.terminal.open("lua " .. filename, { auto_close = false })
     else
-        vim.cmd("call Render()")
+        Render()
     end
 end
 
@@ -38,29 +58,9 @@ function ViewPdf()
     vim.cmd("! zathura " .. vim.fn.expand("%:t:r") .. ".pdf &")
 end
 
-function Render()
-    local ft = vim.bo.filetype
-    local filename = vim.fn.expand("%")
-    local filename_noext = vim.fn.expand("%:t:r")
-    local filename_ext = vim.fn.expand("%:t")
-
-    if ft == "tex" then
-        vim.cmd("call RenderLaTexFast()")
-    elseif ft == "plaintex" then
-        vim.cmd("call RenderLaTex()")
-    elseif ft == "markdown" then
-        vim.cmd("FloatermNew pandoc " .. filename_ext .. " -o " .. filename_noext .. ".pdf")
-        ViewPdf()
-    elseif ft == "html" then
-        vim.cmd("!open " .. filename_ext)
-    else
-        vim.cmd("echom \"unsupported filetype\"")
-    end
-end
-
-local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 local opts = { noremap = true }
 local opts_silent = { noremap = true, silent = true }
 
-map("n", "<Leader>m", "<cmd>lua Render()<CR>", opts_silent)
-map("n", "<Leader><F10>", ":lua RunFile()", opts)
+map("n", "<Leader>m", Render, opts_silent)
+map("n", "<Leader><F10>", RunFile, opts)
