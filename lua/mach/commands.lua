@@ -10,7 +10,7 @@ cmd("Papers", function() Snacks.picker.files({ cwd = "~/notes", title = "Notes",
 cmd("Update", function()
     vim.cmd(":Lazy update")
     vim.cmd(":TSUpdate")
-    vim.cmd(":MasonUpdate")
+    vim.cmd(":MasonInstall bash-language-server clangd deno gopls json-lsp lua-language-server python-lsp-server rust-analyzer taplo texlab yaml-language-server zls")
 end)
 cmd("Chrome", function() vim.fn.system({ "open", "https://www.google.com" }) end)
 cmd("TexRender", ":call RenderLaTexFast()")
@@ -21,3 +21,4 @@ if os.getenv("TMUX") then
     -- see what ports are open on system; useful for testing APIs
     cmd("Ports", "silent exec \"!tmux split-window -h 'lsof -i -P -n | grep LISTEN; read'\"")
 end
+
