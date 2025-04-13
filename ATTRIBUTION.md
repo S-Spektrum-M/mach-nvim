@@ -48,11 +48,6 @@ License: Apache 2.0
 Copyright not specified
 see: https://github.com/williamboman/mason.nvim
 
-### nvim-tree.lua
-License: GPL 3.0
-Copyright (C) 2019 Yazdani Kiyan
-see: https://github.com/nvim-tree/nvim-tree.lua
-
 ### nvim-treesitter
 License: Apache 2.0
 Copyright not specified
