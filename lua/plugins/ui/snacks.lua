@@ -129,7 +129,7 @@ return {
         { "<C-b>",         function() Snacks.picker.buffers() end,               desc = "Buffers" },
         { "<Leader><C-p>", function() Snacks.picker.commands() end,              desc = "Commands" },
         { "<Leader>gl",    function() Snacks.picker.git_log() end,               desc = "Git Commits Log" },
-        { "<Leader>ds",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
+        { "<Leader>st",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" }, -- st  for  symbol  tree
         { "gd",            function() Snacks.picker.lsp_definitions() end,       desc = "Go to Lsp Defintion" },
         -- snacks terminal
         -- In my actual workflow if I ever need more than 1 terminal, I just
