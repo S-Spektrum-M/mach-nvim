@@ -85,7 +85,7 @@ local snacks_statuscolumn = {
     },
     -- patterns to match Git signs
     git = { patterns = { "GitSign", "MiniDiffSign" }, },
-    refresh = 100,
+    refresh = 10,
 }
 
 local snacks_picker = {

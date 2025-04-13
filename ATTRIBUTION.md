@@ -99,11 +99,6 @@ License: Vim License
 Copyright (c) Tim Pope
 see: https://github.com/tpope/vim-fugitive
 
-### vim-signature
-License: MIT
-Copyright (c) 2015 Kartik Shenoy
-see: https://github.com/kshenoy/vim-signature
-
 ### vim-tmux-navigator
 License: MIT
 Copyright (c) 2017 Chris Toomey
