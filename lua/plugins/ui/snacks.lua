@@ -1,7 +1,7 @@
 -- MIT License – see LICENSE or https://opensource.org/licenses/MIT
 
 local nvim_ver = vim.version()
-local mach_major, mach_minor, mach_patch = 1, 2, 3
+local mach_major, mach_minor, mach_patch = 1, 2, 4
 local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
 
 --[[
@@ -43,9 +43,10 @@ local snacks_dashboard = {
     preset = {
         pick = nil,
         keys = {
+            { icon = "", desc = "Find File", action = function () Snacks.dashboard.pick('files') end, key = "p" },
             { icon = " ", desc = "New File", action = ":enew", key = "n" },
-            { icon = " ", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')", key = "p" },
-            { icon = " ", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')", key = "r" },
+            { icon = "", desc = "Terminal", action = function () Snacks.terminal.toggle() end, key = "t" },
+            { icon = "", desc = "Recent Files", action = function () Snacks.dashboard.pick('oldfiles') end, key = "r" },
             { icon = "󰒲 ", desc = "Update", action = ":Update", key = "u" },
             { icon = " ", desc = "Quit", action = ":qa", key = "q" },
         },
@@ -131,8 +132,10 @@ return {
         { "<Leader>ds",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
         { "gd",            function() Snacks.picker.lsp_definitions() end,       desc = "Go to Lsp Defintion" },
         -- snacks terminal
-        -- In my actual workflow if I ever need more than 1 terminal, I just use tmux
-        { '<F12>', function() Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
+        -- In my actual workflow if I ever need more than 1 terminal, I just
+        -- use tmux, so I won't port all of the floaterm keybinds until later
+        {
+            '<F12>', function() Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
         },
     },
 }
