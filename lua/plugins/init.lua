@@ -38,8 +38,7 @@ local function load_plugin_specs_from(dir)
 end
 
 -- List all plugin categories
-local plugin_dirs = { "editor", "files", "git", "lsp", "lsp/extensions", "terminal", "ui",
-}
+local plugin_dirs = { "editor", "files", "git", "lsp", "lsp/extensions", "terminal", "ui", }
 
 -- Load all plugin specs from each category
 local all_specs = {
