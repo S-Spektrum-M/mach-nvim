@@ -1,3 +1,12 @@
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "Avante", "AvanteInput", "AvanteSelectedFiles" },
+    callback = function()
+        vim.schedule(function()
+            vim.keymap.set("n", "q", "<CMD>q<CR>", { buffer = true })
+        end)
+    end
+})
+
 return {
     "yetone/avante.nvim",
     -- Never set this value to "*"! Never!
@@ -70,35 +79,10 @@ return {
         },
     },
     keys = {
-        {
-            "<leader>aa",
-            "<CMD>AvanteAsk<CR>",
-            desc = "Avante",
-            mode = { 'n', 'v' },
-        },
-        {
-            "<leader>ae",
-            "<CMD>AvanteEdit<CR>",
-            desc = "Avante",
-            mode = { 'n', 'v' },
-        },
-        {
-            "<leader>at",
-            "<CMD>AvanteToggle<CR>",
-            desc = "Avante",
-            mode = { 'n', 'v' },
-        },
-        {
-            "<leader>af",
-            "<CMD>AvanteFocus<CR>",
-            desc = "Avante",
-            mode = { 'n', 'v' },
-        },
-        {
-            "<leader>a?",
-            "<CMD>AvanteModels<CR>",
-            desc = "Avante",
-            mode = { 'n', 'v' },
-        },
+        { "<leader>aa", "<CMD>AvanteAsk<CR>", desc = "Avante", mode = { 'n', 'v' }, },
+        { "<leader>ae", "<CMD>AvanteEdit<CR>", desc = "Avante", mode = { 'n', 'v' }, },
+        { "<leader>at", "<CMD>AvanteToggle<CR>", desc = "Avante", mode = { 'n', 'v' }, },
+        { "<leader>af", "<CMD>AvanteFocus<CR>", desc = "Avante", mode = { 'n', 'v' }, },
+        { "<leader>a?", "<CMD>AvanteModels<CR>", desc = "Avante", mode = { 'n', 'v' }, },
     }
 }
