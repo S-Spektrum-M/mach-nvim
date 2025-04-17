@@ -148,8 +148,8 @@ vim.mach_opts = {
         }
     },
     treesitter = {
-        sync_install = false,         -- async parser install
-        auto_install = false,         -- avoid delay on first open
+        sync_install = false, -- async parser install
+        auto_install = false, -- avoid delay on first open
         highlight = {
             enable = true,
             additional_vim_regex_highlighting = false,
@@ -169,7 +169,7 @@ vim.mach_opts = {
     },
     which_key = {
         plugins = {
-            marks = true, -- shows a list of your marks on ' and `
+            marks = true,     -- shows a list of your marks on ' and `
             registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
             -- the presets plugin, adds help for a bunch of default keybindings in Neovim
             -- No actual key bindings are created
@@ -178,13 +178,13 @@ vim.mach_opts = {
                 suggestions = 40,
             },
             presets = {
-                operators = true, -- adds help for operators like d, y, ...
-                motions = true, -- adds help for motions
+                operators = true,    -- adds help for operators like d, y, ...
+                motions = true,      -- adds help for motions
                 text_objects = true, -- help for text objects triggered after entering an operator
-                windows = true, -- default bindings on <c-w>
-                nav = true, -- misc bindings to work with windows
-                z = true, -- bindings for folds, spelling and others prefixed with z
-                g = true, -- bindings for prefixed with g
+                windows = true,      -- default bindings on <c-w>
+                nav = true,          -- misc bindings to work with windows
+                z = true,            -- bindings for folds, spelling and others prefixed with z
+                g = true,            -- bindings for prefixed with g
             },
         },
         icons = {
@@ -195,11 +195,11 @@ vim.mach_opts = {
         layout = {
             height = { min = 4, max = 25 }, -- min and max height of the columns
             width = { min = 20, max = 50 }, -- min and max width of the columns
-            spacing = 3, -- spacing between columns
-            align = "left", -- align columns left, center or right
+            spacing = 3,                    -- spacing between columns
+            align = "left",                 -- align columns left, center or right
         },
-        show_help = true, -- show a help message in the command line for using WhichKey
-        show_keys = true, -- show the currently pressed key and its label as a message in the command line
+        show_help = true,                   -- show a help message in the command line for using WhichKey
+        show_keys = true,                   -- show the currently pressed key and its label as a message in the command line
         -- triggers = {"<leader>"} -- or specifiy a list manually
         -- list of triggers, where WhichKey should not wait for timeoutlen and show immediately
         -- disable the WhichKey popup for certain buf types and file types.
@@ -207,7 +207,30 @@ vim.mach_opts = {
             buftypes = {},
             filetypes = {},
         },
-    }
+    },
+    ts_rainbow = {
+        strategy = {
+            [''] = 'rainbow-delimiters.strategy.global',
+            vim = 'rainbow-delimiters.strategy.local',
+        },
+        query = {
+            [''] = 'rainbow-delimiters',
+            lua = 'rainbow-blocks',
+        },
+        priority = {
+            [''] = 110,
+            lua = 210,
+        },
+        highlight = {
+            'RainbowDelimiterRed',
+            'RainbowDelimiterYellow',
+            'RainbowDelimiterBlue',
+            'RainbowDelimiterOrange',
+            'RainbowDelimiterGreen',
+            'RainbowDelimiterViolet',
+            'RainbowDelimiterCyan',
+        },
+    },
 }
 
 local function validate_opts()
