@@ -1,7 +1,7 @@
 -- MIT License – see LICENSE or https://opensource.org/licenses/MIT
 
 local nvim_ver = vim.version()
-local mach_major, mach_minor, mach_patch = 1, 2, 3
+local mach_major, mach_minor, mach_patch = 1, 2, 4
 local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
 
 --[[
@@ -43,9 +43,10 @@ local snacks_dashboard = {
     preset = {
         pick = nil,
         keys = {
+            { icon = "", desc = "Find File", action = function () Snacks.dashboard.pick('files') end, key = "p" },
             { icon = " ", desc = "New File", action = ":enew", key = "n" },
-            { icon = " ", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')", key = "p" },
-            { icon = " ", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')", key = "r" },
+            { icon = "", desc = "Terminal", action = function () Snacks.terminal.toggle() end, key = "t" },
+            { icon = "", desc = "Recent Files", action = function () Snacks.dashboard.pick('oldfiles') end, key = "r" },
             { icon = "󰒲 ", desc = "Update", action = ":Update", key = "u" },
             { icon = " ", desc = "Quit", action = ":qa", key = "q" },
         },
@@ -63,6 +64,16 @@ local snacks_indent = {
     animate = { enabled = false },
 }
 
+local snacks_input = {
+    enabled = true,
+    char = "│",
+    win = {
+        relative = "cursor",
+        row = -3,
+        col = 0,
+    }
+}
+
 local snacks_statuscolumn = {
     -- default config but with open fold statuscolumn sign
     enabled = true,
@@ -74,7 +85,7 @@ local snacks_statuscolumn = {
     },
     -- patterns to match Git signs
     git = { patterns = { "GitSign", "MiniDiffSign" }, },
-    refresh = 100,
+    refresh = 10,
 }
 
 local snacks_picker = {
@@ -99,11 +110,13 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    -- let's have this seperate for now
+    -- TODO: move to integrated config
     opts = {
         bigfile = { enabled = true },
         dashboard = snacks_dashboard,
         indent = snacks_indent,
-        input = { enabled = true },
+        input = snacks_input,
         notifier = { enabled = true },
         quickfile = { enabled = true },
         picker = snacks_picker,
@@ -118,11 +131,13 @@ return {
         { "<C-b>",         function() Snacks.picker.buffers() end,               desc = "Buffers" },
         { "<Leader><C-p>", function() Snacks.picker.commands() end,              desc = "Commands" },
         { "<Leader>gl",    function() Snacks.picker.git_log() end,               desc = "Git Commits Log" },
-        { "<Leader>ds",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" },
+        { "<Leader>st",    function() Snacks.picker.lsp_workspace_symbols() end, desc = "Lsp Document Symbols" }, -- st  for  symbol  tree
         { "gd",            function() Snacks.picker.lsp_definitions() end,       desc = "Go to Lsp Defintion" },
         -- snacks terminal
-        -- In my actual workflow if I ever need more than 1 terminal, I just use tmux
-        { '<F12>', function () Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
+        -- In my actual workflow if I ever need more than 1 terminal, I just
+        -- use tmux, so I won't port all of the floaterm keybinds until later
+        {
+            '<F12>', function() Snacks.terminal.toggle() end, desc = "Toggle Floaterm Window", mode = { 'n', 't' }
         },
     },
 }
