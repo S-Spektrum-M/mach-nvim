@@ -41,6 +41,7 @@ local servers = {
     "texlab",
     "yamlls",
     "zls",
+    "harper-ls",
 }
 
 vim.lsp.enable(servers)
