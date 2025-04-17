@@ -110,6 +110,8 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    -- let's have this seperate for now
+    -- TODO: move to integrated config
     opts = {
         bigfile = { enabled = true },
         dashboard = snacks_dashboard,
