@@ -84,11 +84,6 @@ License: Apache 2.0
 Copyright not specified
 see: https://github.com/folke/trouble.nvim
 
-### vim-auto-save
-License: MIT
-Copyright (c) 2013 Alexey Chernenkov
-see: https://github.com/907th/vim-auto-save
-
 ### vim-fugitive
 License: Vim License
 Copyright (c) Tim Pope
