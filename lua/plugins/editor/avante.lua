@@ -27,11 +27,7 @@ return {
             opts = vim.mach_opts.img_clip,
             ft = { 'markdown', 'tex' },
         },
-        {
-            'MeanderingProgrammer/render-markdown.nvim',
-            opts = vim.mach_opts.render_markdown,
-            ft = { "markdown", "Avante" },
-        },
+        'MeanderingProgrammer/render-markdown.nvim',
     },
     keys = {
         { "<leader>aa", "<CMD>AvanteAsk<CR>", desc = "Avante", mode = { 'n', 'v' }, },
