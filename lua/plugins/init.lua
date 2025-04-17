@@ -38,7 +38,7 @@ local function load_plugin_specs_from(dir)
 end
 
 -- List all plugin categories
-local plugin_dirs = { "editor", "files", "git", "lsp", "lsp/extensions", "terminal", "ui", }
+local plugin_dirs = { "custom","editor", "files", "git", "lsp", "lsp/extensions", "terminal", "ui", }
 
 -- Load all plugin specs from each category
 local all_specs = {
@@ -58,8 +58,6 @@ local all_specs = {
 for _, dir in ipairs(plugin_dirs) do
     vim.list_extend(all_specs, load_plugin_specs_from(dir))
 end
-
-vim.list_extend(all_specs, require('plugins.custom'))
 
 -- Setup Lazy with discovered specs
 require("lazy").setup(all_specs, nil)
