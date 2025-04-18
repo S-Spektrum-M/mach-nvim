@@ -251,6 +251,7 @@ vim.mach_opts = {
     },
     mach_builtins = {
         autosave = {
+            enabled = true,
             autosave_time = 300,            -- milliseconds
             notify        = true,           -- wether or not to  notify
         }
