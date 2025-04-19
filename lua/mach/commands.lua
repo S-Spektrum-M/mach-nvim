@@ -10,7 +10,7 @@ cmd("Papers", function() Snacks.picker.files({ cwd = "~/notes", title = "Notes",
 cmd("Update", function()
     vim.cmd(":Lazy update")
     vim.cmd(":TSUpdate")
-    vim.cmd(":MasonInstall bash-language-server clangd deno gopls json-lsp lua-language-server python-lsp-server rust-analyzer taplo texlab yaml-language-server zls")
+    vim.cmd(":MasonInstall bash-language-server clangd deno gopls json-lsp lua-language-server python-lsp-server rust-analyzer taplo texlab yaml-language-server zls harper-ls")
 end)
 cmd("Chrome", function() vim.fn.system({ "open", "https://www.google.com" }) end)
 cmd("TexRender", ":call RenderLaTexFast()")

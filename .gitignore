@@ -1,3 +1,3 @@
 .luarc.json
 todos.md
-lua/plugins/custom.lua
+lua/plugins/custom/

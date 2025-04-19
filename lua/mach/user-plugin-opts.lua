@@ -249,6 +249,13 @@ vim.mach_opts = {
             'RainbowDelimiterCyan',
         },
     },
+    mach_builtins = {
+        autosave = {
+            enabled = true,
+            autosave_time = 300,            -- milliseconds
+            notify        = true,           -- wether or not to  notify
+        }
+    },
 }
 
 local function validate_opts()

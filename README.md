@@ -20,9 +20,14 @@
 - ripgrep
 
 ### Installation
+#### Automatic Mode
 ```bash
-wget https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh
+curl https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh | bash -s -- -nupig -m source
+```
+
+#### Interactive Mode
+```
+curl https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh  -o install.sh
 chmod +x install.sh
-./install.sh -nupig -m SOURCE # use this for automated install
-./install.sh                  # use this for manual installs
+./install.sh
 ```
