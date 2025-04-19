@@ -35,12 +35,12 @@ vim.mach_opts = {
             model = "gemma3:4b",
         },
         behaviour = {
-            auto_suggestions = true,                                            -- Experimental stage
+            auto_suggestions = true, -- Experimental stage
             auto_set_highlight_group = true,
             auto_set_keymaps = true,
             auto_apply_diff_after_generation = false,
             support_paste_from_clipboard = false,
-            minimize_diff = true,                                               -- Whether to remove unchanged lines when applying a code block
+            minimize_diff = true,                        -- Whether to remove unchanged lines when applying a code block
             enable_token_counting = true,                -- Whether to enable token counting. Default to true.
             enable_cursor_planning_mode = false,         -- Whether to enable Cursor Planning Mode. Default to false.
             enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
@@ -251,15 +251,15 @@ vim.mach_opts = {
     },
     mach_builtins = {
         autosave = {
-            enabled = true,
-            autosave_time = 300,            -- milliseconds
-            notify        = true,           -- wether or not to  notify
+            enabled       = true,
+            autosave_time = 1000,    -- milliseconds
+            notify        = true,   -- wether or not to  notify
         }
     },
 }
 
 local function validate_opts()
-    for _, plugin in ipairs(vim.mach_enabled)  do
+    for _, plugin in ipairs(vim.mach_enabled) do
         vim.notify("Validating config for " .. plugin, vim.log.levels.INFO)
         if vim.mach_opts[plugin] == nil then
             vim.notify("config for " .. plugin .. " does not exist", vim.log.levels.ERROR)
