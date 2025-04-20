@@ -33,6 +33,7 @@ local servers = {
     "clangd",
     "denols",
     "gopls",
+    "harper",
     "jsonls",
     "lua_ls",
     "pylsp",
@@ -41,7 +42,6 @@ local servers = {
     "texlab",
     "yamlls",
     "zls",
-    "harper-ls",
 }
 
 vim.lsp.enable(servers)

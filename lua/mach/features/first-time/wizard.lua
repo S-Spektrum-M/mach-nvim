@@ -1,6 +1,5 @@
 local function plugin_setup()
-    local avante_conf = require('mach.features.first-time.plugin-wizards.avante')()
-    return {avante_conf}
+    require('mach.features.first-time.plugin-wizards.avante')()
 end
 
 return function()
