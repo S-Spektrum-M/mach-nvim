@@ -1,7 +1,7 @@
 -- MIT License – see LICENSE or https://opensource.org/licenses/MIT
 
 local nvim_ver = vim.version()
-local mach_major, mach_minor, mach_patch = 1, 2, 4
+local mach_major, mach_minor, mach_patch = 1, 2, 5
 local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
 
 --[[
