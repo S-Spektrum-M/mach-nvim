@@ -23,7 +23,7 @@ vim.mach_opts = {
         provider = "openai",
         openai = {
             endpoint = "https://api.openai.com/v1",
-            model = "o3-mini",
+            model = "o4-mini",
             timeout = 60000,
             temperature = 0,
             max_completion_tokens = 32768,
@@ -129,6 +129,14 @@ vim.mach_opts = {
     onedark = {
         style = "darker",
         code_style = { comments = 'none', },
+        highlights = {
+            Normal = {
+                bg = "#232526",
+            },
+            EndOfBuffer = {
+                bg = "#232526",
+            }
+        },
     },
     -- gitsigns
     gitsigns = {
@@ -252,8 +260,8 @@ vim.mach_opts = {
     mach_builtins = {
         autosave = {
             enabled       = true,
-            autosave_time = 1000,    -- milliseconds
-            notify        = true,   -- wether or not to  notify
+            autosave_time = 0,    -- milliseconds
+            notify        = true, -- wether or not to  notify
         }
     },
 }

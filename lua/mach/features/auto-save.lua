@@ -1,4 +1,9 @@
 -- Auto-save on text change (with debounce and notify)
+local enabled = vim.mach_opts.mach_builtins.autosave.enabled
+
+vim.opt.backup = not enabled
+vim.opt.swapfile = not enabled
+
 local autosave_timer = vim.loop.new_timer()
 
 local function save_buf(args)
@@ -7,7 +12,7 @@ local function save_buf(args)
         and vim.api.nvim_buf_get_option(bufnr, "modified")
         and vim.api.nvim_buf_get_option(bufnr, "buftype") == ""
     then
-        if vim.mach_opts.mach_builtins.autosave.enabled then
+        if enabled then
             vim.api.nvim_command("silent! write")
             if vim.mach_opts.mach_builtins.autosave.notify then
                 vim.notify(
