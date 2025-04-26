@@ -262,6 +262,9 @@ vim.mach_opts = {
             enabled       = true,
             autosave_time = 0,    -- milliseconds
             notify        = true, -- wether or not to  notify
+        },
+        whitespace = {
+            enabled = true,
         }
     },
 }
