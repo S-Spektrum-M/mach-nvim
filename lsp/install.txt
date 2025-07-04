@@ -1,0 +1,13 @@
+bash-language-server
+clangd
+deno
+gopls
+json-lsp
+lua-language-server
+neocmakelsp
+python-lsp-server
+rust-analyzer
+taplo
+texlab
+yaml-language-server
+zls
