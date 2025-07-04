@@ -142,7 +142,7 @@ initialize_plugins_and_lsps() {
     log "Installing LSPs: $lsps_to_install"
     # Use Mason to install the LSPs
     nvim --headless "+MasonInstall $lsps_to_install" +qa
-    log "Plugin and LSP installation complete."
+    log "Plugin and LSP installation complete.\n"
 }
 
 # --- Main Execution ---
