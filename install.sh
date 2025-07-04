@@ -148,6 +148,7 @@ initialize_plugins_and_lsps() {
 # --- Main Execution ---
 main() {
     install_neovim
+    mkdir -p ~/.config          # ensure this already exists
     install_config
     initialize_plugins_and_lsps
 }
