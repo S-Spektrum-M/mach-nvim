@@ -106,9 +106,11 @@ install_config() {
         mv "$nvim_config_dir" "$backup_dir"
     fi
 
-    log "Symlinking $source_dir to $nvim_config_dir"
-    ln -s "$source_dir" "$nvim_config_dir"
+    log "Installing config to $nvim_config_dir"
+    git clone https://github.com/S-Spektrum-M/mach-nvim $nvim_config_dir
     log "Configuration installed successfully."
+    # log "Symlinking $source_dir to $nvim_config_dir"
+    # ln -s "$source_dir" "$nvim_config_dir"
 }
 
 # Initialize plugins and install LSPs
