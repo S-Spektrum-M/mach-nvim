@@ -80,10 +80,16 @@ install_neovim() {
         return 0
     fi
 
+    # Check if the "-y" flag is provided, then auto install without prompting.
+    for arg in "$@"; do
+        if [ "$arg" = "-y" ]; then
+            install_neovim_from_source
+            return $?
+        fi
+    done
+
     # If check fails, ask the user if they want to build from source.
     echo -e "${WHITE}Do you want to build and install the latest stable Neovim from source? [Y/n]${NC} "
-    read -p $'> \033[1;37m> \033[0m' -n 1 -r
-    echo # Move to a new line
     if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
         install_neovim_from_source
     else
