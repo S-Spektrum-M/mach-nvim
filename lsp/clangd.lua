@@ -4,7 +4,7 @@ end
 
 local default_config = {
     cmd = {
-        'clangd',
+        exe_name('clangd'),
         '--clang-tidy' ,
         '--query-driver=/bin/g++'
     },
