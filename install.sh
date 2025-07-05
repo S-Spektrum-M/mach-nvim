@@ -90,6 +90,7 @@ install_neovim() {
 
     # If check fails, ask the user if they want to build from source.
     echo -e "${WHITE}Do you want to build and install the latest stable Neovim from source? [Y/n]${NC} "
+    read REPLY
     if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
         install_neovim_from_source
     else
