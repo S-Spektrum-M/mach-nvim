@@ -126,21 +126,26 @@ initialize_plugins_and_lsps() {
     # This command syncs plugins with your configuration (e.g., using Lazy.nvim)
     nvim --headless "+Lazy! sync" +qa
 
-    # Find the absolute path of the lsp/install.txt file relative to the script's location
-    local lsp_file
-    lsp_file="$(cd "$(dirname "$0")" && pwd)/lsp/install.txt"
+    # Embedded LSP install list
+    read -r -d '' embedded_lsps <<'EOF'
+bash-language-server
+clangd
+deno
+gopls
+json-lsp
+lua-language-server
+neocmakelsp
+python-lsp-server
+rust-analyzer
+taplo
+texlab
+yaml-language-server
+zls
+EOF
 
-    # Check if the LSP file exists before proceeding
-    if [ ! -f "$lsp_file" ]; then
-        log "LSP install list ($lsp_file) not found. Skipping LSP installation."
-        return
-    fi
 
-    # --- FIX ---
-    # 1. Correctly read from the "$lsp_file".
-    # 2. Use the proper grep pattern to filter out comments and blank lines.
     local lsps_to_install
-    lsps_to_install=$(grep -vE '^\s*#|^\s*$' "$lsp_file" | tr '\n' ' ')
+    lsps_to_install=$(echo "$embedded_lsps" | tr '\n' ' ')
 
     # Check if there are any LSPs left to install after filtering
     if [ -z "$lsps_to_install" ]; then
