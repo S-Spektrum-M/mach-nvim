@@ -14,6 +14,57 @@ vim.mach_enabled = {
     "ts_rainbow",
 }
 
+local lsp_loc = function()
+    local file_name = vim.fn.expand('%')
+    local parts = {}
+    for part in string.gmatch(file_name, "[^/]+") do
+        table.insert(parts, part)
+    end
+    for i = 1, #parts - 1 do
+        parts[i] = parts[i]:sub(1, 1)
+    end
+    local file = table.concat(parts, "/")
+
+    if vim.lsp.buf_is_attached(0) and require('nvim-navic').is_available() then
+        local loc = require('nvim-navic').get_location()
+        if #loc ~= 0 then
+            return file .. " > " .. loc
+        end
+    end
+
+    return file
+end
+
+local nvim_ver = vim.version()
+local mach_major, mach_minor, mach_patch = 1, 2, 4
+local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
+
+--[[
+ASCII art from: asciiart.website/index.php?art=transportation/airplanes
+Retrieved on: [2025-04-11] No explicit license or author information was provided. If you are the original artist
+and want this removed or credited differently, please reach out.
+]]
+local HEADER_CONTENT = {
+    [[                        █▀▄▀█ ▄▀█ █▀▀ █░█                        ]],
+    [[                 .      █░▀░█ █▀█ █▄▄ █▀█      .                 ]],
+    [[                //                             \\                ]],
+    ("               //             %s             \\\\               "):format(mach_ver),
+    ("              //        neovim     %d.%d.%d        \\\\              "):format(nvim_ver.major, nvim_ver.minor,
+        nvim_ver.patch),
+    [[             //                _._                \\             ]],
+    [[          .---.              .//|\\.              .---.          ]],
+    [[________ / .-. \_________..-~ _.-._ ~-..________ / .-. \_________]],
+    [[         \ ._. /    H-     '--.___.--'     -H    \ ._. /         ]],
+    [[          •---•     H          [H]          H     •---•          ]],
+    [[                   _H_         _H_         _H_                   ]],
+    [[                   UUU         UUU         UUU                   ]],
+}
+
+local snacks_dashboard_header = ""
+for _, row in ipairs(HEADER_CONTENT) do
+    snacks_dashboard_header = snacks_dashboard_header .. row .. '\n'
+end
+
 
 vim.mach_opts = {
     -- avante config
@@ -35,12 +86,12 @@ vim.mach_opts = {
             model = "gemma3:4b",
         },
         behaviour = {
-            auto_suggestions = true,                                            -- Experimental stage
+            auto_suggestions = true, -- Experimental stage
             auto_set_highlight_group = true,
             auto_set_keymaps = true,
             auto_apply_diff_after_generation = false,
             support_paste_from_clipboard = false,
-            minimize_diff = true,                                               -- Whether to remove unchanged lines when applying a code block
+            minimize_diff = true,                        -- Whether to remove unchanged lines when applying a code block
             enable_token_counting = true,                -- Whether to enable token counting. Default to true.
             enable_cursor_planning_mode = false,         -- Whether to enable Cursor Planning Mode. Default to false.
             enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
@@ -225,8 +276,8 @@ vim.mach_opts = {
             filetypes = {},
         },
     },
-    -- ts-rainbow
-    ts_rainbow = {
+    -- rainbow_delimiters
+    rainbow_delimiters = {
         strategy = {
             [''] = 'rainbow-delimiters.strategy.global',
             vim = 'rainbow-delimiters.strategy.local',
@@ -249,17 +300,115 @@ vim.mach_opts = {
             'RainbowDelimiterCyan',
         },
     },
+    -- lualine
+    lualine = {
+        options = {
+            icons_enabled = true,
+            theme = 'auto',
+            component_separators = { left = '', right = '' },
+            section_separators = { left = '', right = '' },
+            disabled_filetypes = {},
+            always_divide_middle = true,
+        },
+        sections = {
+            lualine_a = {
+                { 'mode', separator = { left = '' }, right_padding = 2 },
+                'diagnostics',
+            },
+            lualine_b = {
+                'branch',
+                'diff'
+            },
+            lualine_c = { lsp_loc },
+            lualine_z = {
+                'progress',
+                { 'location', separator = { right = '' }, left_padding = 2 },
+            },
+        },
+    },
+    snacks = {
+        bigfile = { enabled = true },
+        dashboard = {
+            width = 60,
+            row = nil,                                                                   -- dashboard position. nil for center
+            col = nil,                                                                   -- dashboard position. nil for center
+            pane_gap = 4,                                                                -- empty columns between vertical panes
+            autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
+            -- These settings are used by some built-in sections
+            preset = {
+                pick = nil,
+                keys = {
+                    { icon = "", desc = "Find File", action = function() Snacks.dashboard.pick('files') end, key = "p" },
+                    { icon = " ", desc = "New File", action = ":enew", key = "n" },
+                    { icon = "", desc = "Terminal", action = function() Snacks.terminal.toggle() end, key = "t" },
+                    { icon = "", desc = "Recent Files", action = function() Snacks.dashboard.pick('oldfiles') end, key = "r" },
+                    { icon = "󰒲 ", desc = "Update", action = ":Update", key = "u" },
+                    { icon = " ", desc = "Quit", action = ":qa", key = "q" },
+                },
+                header = snacks_dashboard_header,
+            },
+            sections = {
+                { section = "header" },
+                { section = "keys",  gap = 1, padding = 1 },
+            },
+        },
+        indent = {
+            enabled = true,
+            char = "│",
+            animate = { enabled = false },
+        },
+        input = {
+            enabled = true,
+            char = "│",
+            win = {
+                relative = "cursor",
+                row = -3,
+                col = 0,
+            }
+        },
+        notifier = { enabled = true },
+        quickfile = { enabled = true },
+        picker = {
+            layout = 'telescope',
+            layouts = {},
+        },
+        statuscolumn =
+        {
+            -- default config but with open fold statuscolumn sign
+            enabled = true,
+            left = { "mark", "sign" }, -- priority of signs on the left (high to low)
+            right = { "fold", "git" }, -- priority of signs on the right (high to low)
+            folds = {
+                open = true,           -- show open fold icons
+                git_hl = false,        -- use Git Signs hl for fold icons
+            },
+            -- patterns to match Git signs
+            git = { patterns = { "GitSign", "MiniDiffSign" }, },
+            refresh = 10,
+        },
+        terminal = {
+            enabled = true,
+            win = {
+                style = "terminal",
+                position = "float",
+                width = 0.7,
+                height = 0.7,
+                border = "rounded",
+            },
+        },
+        words = { enabled = false },
+    },
     mach_builtins = {
         autosave = {
-            enabled = false,
-            autosave_time = 300,            -- milliseconds
-            notify        = true,           -- wether or not to  notify
+            enabled       = false,
+            autosave_time = 300,  -- milliseconds
+            notify        = true, -- wether or not to  notify
         }
     },
 }
 
 local function validate_opts()
-    for _, plugin in ipairs(vim.mach_enabled)  do
+    for _, plugin in ipairs(vim.mach_enabled) do
         vim.notify("Validating config for " .. plugin, vim.log.levels.INFO)
         if vim.mach_opts[plugin] == nil then
             vim.notify("config for " .. plugin .. " does not exist", vim.log.levels.ERROR)
