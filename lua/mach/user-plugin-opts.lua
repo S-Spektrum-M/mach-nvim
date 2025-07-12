@@ -26,13 +26,12 @@ local lsp_loc = function()
     local file = table.concat(parts, "/")
 
     if vim.lsp.buf_is_attached(0) and require('nvim-navic').is_available() then
-        local loc = require('nvim-navic').get_location()
+        local loc = require('nvim-navic').get_location():gsub(" > ", ">")
         if #loc ~= 0 then
-            return file .. " > " .. loc
+            return (file .. ">" .. loc):gsub(" ", "")
         end
     end
-
-    return file
+    return file:gsub(" ", "")
 end
 
 local nvim_ver = vim.version()
@@ -62,8 +61,7 @@ local HEADER_CONTENT = {
 
 local snacks_dashboard_header = ""
 for _, row in ipairs(HEADER_CONTENT) do
-    snacks_dashboard_header = snacks_dashboard_header .. row .. '\n'
-end
+    snacks_dashboard_header = snacks_dashboard_header .. row .. '\n' end
 
 
 vim.mach_opts = {
@@ -314,17 +312,18 @@ vim.mach_opts = {
         },
         sections = {
             lualine_a = {
-                { 'mode', separator = { left = '' }, right_padding = 2 },
-                'diagnostics',
             },
             lualine_b = {
-                'branch',
-                'diff'
+                'diagnostics',
+                'diff',
+                lsp_loc
             },
-            lualine_c = { lsp_loc },
+            lualine_c = {},
+            lualine_x = {},
+            lualine_y = {},
             lualine_z = {
                 'progress',
-                { 'location', separator = { right = '' }, left_padding = 2 },
+                'location',
             },
         },
     },
