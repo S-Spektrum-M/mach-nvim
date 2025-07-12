@@ -72,18 +72,20 @@ vim.mach_opts = {
         -- TODO: Other Providers
         auto_suggestions_provider = "ollama",
         provider = "openai",
-        openai = {
-            endpoint = "https://api.openai.com/v1",
-            model = "o3-mini",
-            timeout = 60000,
-            temperature = 0,
-            max_completion_tokens = 32768,
-            reasoning_effort = "low",
-        },
-        ollama = {
-            -- this is not very good but in my experience it can run on nearly
-            -- anything. requires ollama0.60.
-            model = "gemma3:4b",
+        providers = {
+            openai = {
+                endpoint = "https://api.openai.com/v1",
+                model = "o4-mini",
+                timeout = 30000,
+                extra_request_body = {
+                    reasoning_effort = "low",
+                    temperature = 0.75,
+                    max_completion_tokens = 32768,
+                },
+            },
+            ollama = {
+                model = "gemma3:4b",
+            },
         },
         behaviour = {
             auto_suggestions = true, -- Experimental stage
