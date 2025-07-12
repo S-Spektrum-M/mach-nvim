@@ -11,7 +11,8 @@ vim.mach_enabled = {
     "gitsigns",
     "treesitter",
     "which_key",
-    "ts_rainbow",
+    "rainbow_delimiters",
+    "mason",
 }
 
 local lsp_loc = function()
@@ -65,6 +66,16 @@ for _, row in ipairs(HEADER_CONTENT) do
 
 
 vim.mach_opts = {
+    -- mason config
+    mason = {
+        ui = {
+            icons = {
+                package_installed = "✓",
+                package_pending = "➜",
+                package_uninstalled = "✗"
+            }
+        }
+    },
     -- avante config
     avante = {
         -- TODO: Other Providers
