@@ -41,7 +41,7 @@ return {
             desc = "Go to Lsp Defintion"
         },
         {
-            "<F12>",
+            "<Leader>3",
             function() Snacks.terminal.toggle() end,
             desc = "Toggle Floaterm Window",
             mode = { 'n', 't' }

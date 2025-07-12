@@ -18,7 +18,7 @@ local maps = {
     { "n", "K",            vim.lsp.buf.hover,                             { noremap = true, desc = "Hover Insights", } },
     { "n", "gi",           vim.lsp.buf.implementation,                    { noremap = true, desc = "Go to implementation", } },
     { "n", "gR",           vim.lsp.buf.code_action,       { noremap = true, desc = "Refactor", } },
-    { "n", "<leader><F2>", vim.lsp.buf.format,                            { noremap = true, desc = "Format buffer" } },
+    { "n", "<leader>2",     vim.lsp.buf.format,                            { noremap = true, desc = "Format buffer" } },
     { "n", "gK",           switch_lsp_diag_mode,                          { noremap = true, desc = "Toggle diagnostic virtual_lines" } },
     { "n", "gr",           function() Snacks.picker.lsp_references() end, { noremap = true, desc = "Go to References", } }, -- this needs to be in function ... end syntax bc Snakcks can't be indexed
 }
