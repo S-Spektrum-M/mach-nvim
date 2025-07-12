@@ -5,14 +5,11 @@ end
 local default_config = {
     cmd = { exe_name('taplo'), 'lsp', 'stdio' },
     filetypes = { 'toml' },
-    root_dir = function(fname)
-        return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
-    end,
-    single_file_support = true,
+    root_markers = { '.taplo.toml', 'taplo.toml', '.git' },
     on_attach = function(client, bufnr)
-        local navic = require("nvim-navic")
-        navic.attach(client, bufnr)
-    end
+        require("nvim-navic").attach(client, bufnr)
+    end,
+    single_file_support = true
 }
 
 return default_config
