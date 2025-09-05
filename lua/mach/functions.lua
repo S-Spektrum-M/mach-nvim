@@ -63,4 +63,4 @@ local opts = { noremap = true }
 local opts_silent = { noremap = true, silent = true }
 
 map("n", "<Leader>m", Render, opts_silent)
-map("n", "<Leader>10", RunFile, opts)
+map("n", "<Leader>4", RunFile, opts)
