@@ -81,7 +81,7 @@ vim.mach_opts = {
     avante = {
         -- TODO: Other Providers
         auto_suggestions_provider = "ollama",
-        provider = "gemini-cli",
+        provider = "openai",
         providers = {
             openai = {
                 endpoint = "https://api.openai.com/v1",
