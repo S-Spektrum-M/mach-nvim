@@ -62,7 +62,8 @@ local HEADER_CONTENT = {
 
 local snacks_dashboard_header = ""
 for _, row in ipairs(HEADER_CONTENT) do
-    snacks_dashboard_header = snacks_dashboard_header .. row .. '\n' end
+    snacks_dashboard_header = snacks_dashboard_header .. row .. '\n'
+end
 
 
 vim.mach_opts = {
@@ -80,7 +81,7 @@ vim.mach_opts = {
     avante = {
         -- TODO: Other Providers
         auto_suggestions_provider = "ollama",
-        provider = "openai",
+        provider = "gemini-cli",
         providers = {
             openai = {
                 endpoint = "https://api.openai.com/v1",
@@ -94,6 +95,18 @@ vim.mach_opts = {
             },
             ollama = {
                 model = "gemma3:4b",
+            },
+        },
+        acp_providers = {
+            ["gemini-cli"] = {
+                command = "gemini",
+                args = {
+                    "--experimental-acp"
+                },
+                env = {
+                    NODE_NO_WARNINGS = 1,
+                    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+                },
             },
         },
         behaviour = {
