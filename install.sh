@@ -39,21 +39,34 @@ check_nvim_version() {
     return 0 # Success
 }
 
-# Function to install Neovim from source
+# Function to install Neovim from source (RHEL-specific)
 install_neovim_from_source() {
-    log "Installing build dependencies..."
+    log "Installing build dependencies for RHEL..."
+
+    # Define RHEL build dependencies
+    # git is needed for cloning nvim and the config
+    local rhel_packages="git ninja-build gettext libtool autoconf automake cmake gcc-c++ pkg-config unzip patch make"
+
     # 1. Detect package manager and install dependencies
-    if command -v apt-get &>/dev/null; then
-        sudo apt-get update > /dev/null
-        sudo apt-get install -y ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip > /dev/null
-    elif command -v dnf &>/dev/null; then
-        sudo dnf -y install ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch > /dev/null
-    elif command -v pacman &>/dev/null; then
-        sudo pacman -S --noconfirm base-devel cmake unzip ninja curl > /dev/null
-    elif command -v brew &>/dev/null; then
-        brew install -q ninja libtool automake cmake pkg-config gettext curl > /dev/null
+    if command -v dnf &>/dev/null; then
+        # RHEL 8/9
+        log "Detected dnf (RHEL 8/9). Enabling CRB/PowerTools repo..."
+        # RHEL 8 uses 'powertools', RHEL 9 uses 'crb'. Try both, ignore errors.
+        sudo dnf config-manager --set-enabled powertools > /dev/null 2>&1 || true
+        sudo dnf config-manager --set-enabled crb > /dev/null 2>&1 || true
+
+        log "Installing dependencies via dnf..."
+        sudo dnf install -y $rhel_packages > /dev/null
+    elif command -v yum &>/dev/null; then
+        # RHEL 7
+        log "Detected yum (RHEL 7). Enabling EPEL repo..."
+        sudo yum install -y epel-release > /dev/null
+
+        log "Installing dependencies via yum..."
+        sudo yum install -y $rhel_packages > /dev/null
     else
-        echo "Could not detect package manager. Please install build dependencies manually."
+        echo "Could not detect 'dnf' or 'yum'. This script is intended for RHEL."
+        echo "Please install build dependencies manually: $rhel_packages"
         return 1
     fi
     log "Build dependencies installed."
@@ -103,7 +116,9 @@ install_neovim() {
 install_config() {
     local nvim_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
     local backup_dir="${nvim_config_dir}.$(date +%Y%m%d%H%M%S).bak"
-    local source_dir="$(cd "$(dirname "$0")" && pwd)"
+    # Note: This script assumes the config repo is being cloned,
+    # not symlinked from where the script is.
+    # local source_dir="$(cd "$(dirname "$0")" && pwd)"
 
     if [ -L "$nvim_config_dir" ]; then
         log "Removing existing symlink: $nvim_config_dir"
@@ -149,7 +164,7 @@ EOF
 
     # Check if there are any LSPs left to install after filtering
     if [ -z "$lsps_to_install" ]; then
-        log "No LSPs to install found in $lsp_file. Skipping LSP installation."
+        log "No LSPs to install. Skipping LSP installation."
         return
     fi
 
@@ -161,10 +176,14 @@ EOF
 
 # --- Main Execution ---
 main() {
-    install_neovim
-    mkdir -p ~/.config          # ensure this already exists
+    # Ensure ~/.config exists before trying to install config
+    mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"
+
+    install_neovim "$@"
     install_config
     initialize_plugins_and_lsps
+
+    log "All done. Enjoy your new Neovim setup!"
 }
 
 main "$@"
