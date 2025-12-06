@@ -31,7 +31,7 @@ function RunFile()
     elseif ft == "c" then
         Snacks.terminal.open("clang " .. filename .. " -o " .. filename_noext .. " && ./" .. filename_noext, { auto_close = false })
     elseif ft == "cpp" then
-        Snacks.terminal.open("g++ " .. filename .. " -o " .. filename_noext .. " --std=c++20 && ./" .. filename_noext, { auto_close = false })
+        Snacks.terminal.open("bear -- " .. "clang++ " .. filename .. " -o " .. filename_noext .. " --std=c++26 && ./" .. filename_noext, { auto_close = false })
     elseif ft == "typescript" then
         Snacks.terminal.open("tsc " .. filename .. " && node " .. filename_noext .. ".js", { auto_close = false })
     elseif ft == "java" then
