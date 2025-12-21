@@ -135,7 +135,12 @@ vim.mach_opts = {
         appearance = { nerd_font_variant = 'mono' },
 
         sources = {
-            default = { 'avante', 'lsp', 'path', 'buffer' },
+            default = {
+                'avante',
+                'lsp',
+                'path',
+                'buffer'
+            },
             providers = {
                 avante = {
                     module = 'blink-cmp-avante',
@@ -430,6 +435,16 @@ vim.mach_opts = {
             notify        = true, -- wether or not to  notify
         }
     },
+    obsidian = {
+        completion = { blink = true },
+        legacy_commands = false,
+        workspaces = {
+            {
+                name = "notes",
+                path = "~/notes/",
+            },
+        },
+    }
 }
 
 local function validate_opts()
