@@ -1,12 +1,9 @@
 return
 {
-    'sindrets/diffview.nvim',
-    dependencies = {
-        'nvim-lua/plenary.nvim',
-        'vim-fugitive'
-    },
+    "esmuellert/vscode-diff.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = "CodeDiff",
     keys = {
-        {"<Leader>do", "<cmd>DiffviewOpen<CR>", desc = "Open diff view"},
-        {"<Leader>dc", "<cmd>DiffviewClose<CR>", desc = "Close diff view"},
+        { "<Leader>dt", "<cmd>CodeDiff<CR>",  desc = "Toggle Diff View" },
     }
 }
