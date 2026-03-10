@@ -401,6 +401,12 @@ vim.mach_opts = {
         picker = {
             layout = 'telescope',
             layouts = {},
+            sources = {
+                files = {
+                    cmd = "fd",
+                    args = { "--type", "f", "--hidden", "--follow", "--exclude", ".git" },
+                },
+            },
         },
         statuscolumn =
         {

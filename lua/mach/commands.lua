@@ -1,9 +1,13 @@
 require('mach.functions')
+local fd_cache = require('mach.features.fd_cache')
 
 local function cmd(alias, command)
     return vim.api.nvim_create_user_command(alias, command, { nargs = 0 })
 end
 
+cmd("InitFdCache", fd_cache.init_fd_cache)
+cmd("ClearFdCache", fd_cache.clear_fd_cache)
+cmd("ListFdFiles", fd_cache.list_files)
 cmd("Projects", function() Snacks.picker.files({ cwd = "~/projects", title = "Projects", }) end)
 cmd("Papers", function() Snacks.picker.files({ cwd = "~/papers", title = "Papers", }) end)
 cmd("Papers", function() Snacks.picker.files({ cwd = "~/notes", title = "Notes", }) end)
