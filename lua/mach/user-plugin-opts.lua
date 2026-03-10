@@ -139,7 +139,8 @@ vim.mach_opts = {
                 'avante',
                 'lsp',
                 'path',
-                'buffer'
+                'buffer',
+                'copilot',
             },
             providers = {
                 avante = {
@@ -148,7 +149,14 @@ vim.mach_opts = {
                     opts = {
                         -- options for blink-cmp-avante
                     }
-                }
+                },
+                copilot = {
+                    name = "copilot",
+                    module = "blink-cmp-copilot",
+                    score_offset = 100,
+                    async = true,
+                },
+
             },
 
         },

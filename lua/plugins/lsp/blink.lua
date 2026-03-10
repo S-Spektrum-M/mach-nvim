@@ -5,6 +5,7 @@ return {
 
     dependencies = {
         'Kaiser-Yang/blink-cmp-avante',
+        "giuxtaposition/blink-cmp-copilot",
     },
 
     event = "InsertEnter",
