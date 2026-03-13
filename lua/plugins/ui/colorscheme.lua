@@ -8,4 +8,11 @@ return {
             vim.cmd.colorscheme("blackbird")
         end
     },
+    -- {
+    --     "rose-pine/neovim",
+    --     name = "rose-pine",
+    --     lazy = false,
+    --     priority = 999,
+    --     opts = {},
+    -- }
 }

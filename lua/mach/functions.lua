@@ -19,6 +19,26 @@ function Render()
 end
 
 function RunFile()
+    local home = vim.fn.expand("$HOME")
+    local dir = vim.fn.expand("%:p:h")
+    local catalyst_root = nil
+
+    while dir and dir ~= "" do
+        if vim.fn.filereadable(dir .. "/catalyst.yaml") == 1 then
+            catalyst_root = dir
+            break
+        end
+        if dir == home or dir == "/" then
+            break
+        end
+        dir = vim.fn.fnamemodify(dir, ":h")
+    end
+
+    if catalyst_root then
+        Snacks.terminal.open("catalyst build", { cwd = catalyst_root, auto_close = false })
+        return
+    end
+
     local ft = vim.bo.filetype
     local filename = vim.fn.expand("%")
     local filename_noext = vim.fn.expand("%:t:r")
