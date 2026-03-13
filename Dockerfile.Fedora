@@ -1,0 +1,12 @@
+# Build: docker build -t mach-nvim-fedora -f Dockerfile.Fedora .
+# Run: docker run -it --rm mach-nvim-fedora bash
+FROM fedora:latest
+
+# install.sh uses sudo, so we need to ensure it's available in the base image
+RUN dnf install -y sudo
+
+WORKDIR /workspace
+COPY . .
+
+# Run the installer with the -y flag to automatically build from source
+RUN ./install.sh -y

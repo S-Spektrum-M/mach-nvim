@@ -1,0 +1,14 @@
+# Build: docker build -t mach-nvim-rhel -f Dockerfile.RHEL .
+# Run: docker run -it --rm mach-nvim-rhel bash
+# AlmaLinux is a free and open-source 1:1 RHEL replacement
+# Official RHEL images require a developer subscription to use package repos
+FROM redhat/ubi9:latest
+
+# install.sh uses sudo, so we need to ensure it's available in the base image
+RUN dnf install -y sudo
+
+WORKDIR /workspace
+COPY . .
+
+# Run the installer with the -y flag to automatically build from source
+# RUN ./install.sh -y

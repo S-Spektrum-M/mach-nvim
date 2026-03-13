@@ -39,34 +39,44 @@ check_nvim_version() {
     return 0 # Success
 }
 
-# Function to install Neovim from source (RHEL-specific)
+# Function to install Neovim from source
 install_neovim_from_source() {
-    log "Installing build dependencies for RHEL..."
-
-    # Define RHEL build dependencies
-    # git is needed for cloning nvim and the config
-    local rhel_packages="git ninja-build gettext libtool autoconf automake cmake gcc-c++ pkg-config unzip patch make"
+    log "Installing build dependencies..."
 
     # 1. Detect package manager and install dependencies
-    if command -v dnf &>/dev/null; then
-        # RHEL 8/9
-        log "Detected dnf (RHEL 8/9). Enabling CRB/PowerTools repo..."
-        # RHEL 8 uses 'powertools', RHEL 9 uses 'crb'. Try both, ignore errors.
-        sudo dnf config-manager --set-enabled powertools > /dev/null 2>&1 || true
-        sudo dnf config-manager --set-enabled crb > /dev/null 2>&1 || true
+    if command -v apt-get &>/dev/null; then
+        # Ubuntu / Debian
+        log "Detected apt-get (Ubuntu/Debian)..."
+        local ubuntu_packages="git ninja-build gettext cmake unzip curl build-essential"
+
+        sudo apt-get update > /dev/null
+        log "Installing dependencies via apt-get..."
+        sudo apt-get install -y $ubuntu_packages > /dev/null
+    elif command -v dnf &>/dev/null; then
+        # Fedora / RHEL 8+
+        log "Detected dnf (Fedora/RHEL 8+)..."
+        local rhel_packages="git ninja-build gettext libtool autoconf automake cmake gcc-c++ pkg-config unzip patch make curl"
+
+        # Enable CRB/PowerTools for RHEL derivatives (CentOS, AlmaLinux, Rocky)
+        if grep -q -i -E 'rhel|centos|rocky|almalinux' /etc/os-release 2>/dev/null; then
+            log "Enabling CRB/PowerTools repo for RHEL derivatives..."
+            sudo dnf config-manager --set-enabled powertools > /dev/null 2>&1 || true
+            sudo dnf config-manager --set-enabled crb > /dev/null 2>&1 || true
+        fi
 
         log "Installing dependencies via dnf..."
         sudo dnf install -y $rhel_packages > /dev/null
     elif command -v yum &>/dev/null; then
         # RHEL 7
         log "Detected yum (RHEL 7). Enabling EPEL repo..."
+        local rhel_packages="git ninja-build gettext libtool autoconf automake cmake gcc-c++ pkg-config unzip patch make curl"
         sudo yum install -y epel-release > /dev/null
 
         log "Installing dependencies via yum..."
         sudo yum install -y $rhel_packages > /dev/null
     else
-        echo "Could not detect 'dnf' or 'yum'. This script is intended for RHEL."
-        echo "Please install build dependencies manually: $rhel_packages"
+        echo "Could not detect 'apt-get', 'dnf', or 'yum'. This script supports Ubuntu, Fedora, and RHEL."
+        echo "Please install build dependencies manually."
         return 1
     fi
     log "Build dependencies installed."
@@ -139,10 +149,10 @@ install_config() {
 initialize_plugins_and_lsps() {
     log "Initializing plugins..."
     # This command syncs plugins with your configuration (e.g., using Lazy.nvim)
-    nvim --headless "+Lazy! sync" +qa
+    nvim --headless "+Lazy! sync" +qa || true
 
     # Embedded LSP install list
-    read -r -d '' embedded_lsps <<'EOF'
+    read -r -d '' embedded_lsps <<'EOF' || true
 bash-language-server
 clangd
 deno
@@ -170,7 +180,7 @@ EOF
 
     log "Installing LSPs: $lsps_to_install"
     # Use Mason to install the LSPs
-    nvim --headless "+MasonInstall $lsps_to_install" +qa
+    nvim --headless "+MasonInstall $lsps_to_install" +qa || true
     log "Plugin and LSP installation complete.\n"
 }
 

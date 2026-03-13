@@ -1,0 +1,14 @@
+# Build: docker build -t mach-nvim-ubuntu -f Dockerfile.Ubuntu .
+# Run: docker run -it --rm mach-nvim-ubuntu bash
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# install.sh uses sudo, so we need to ensure it's available in the base image
+RUN apt-get update && apt-get install -y sudo
+
+WORKDIR /workspace
+COPY . .
+
+# Run the installer with the -y flag to automatically build from source
+RUN ./install.sh -y
