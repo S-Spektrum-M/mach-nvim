@@ -46,4 +46,7 @@ bopt.spelllang = "en_us"
 
 opt.laststatus = 3
 
+opt.signcolumn = "auto"
+opt.termguicolors = true
+
 vim.g.mapleader = " "
