@@ -3,7 +3,8 @@ local git_st = require('mach.features.git_status')
 return {
     'tpope/vim-fugitive',
     keys = {
-        { '<leader>gac', ':Git commit % --amend',    desc = 'commit current file' },
+        { '<leader>gC', ':Git commit % --amend',    desc = 'ammend current file to commit' },
+        { '<leader>ga', '<cmd>Git add %<CR>', desc = 'add current file to commit', },
         { '<leader>gc', ':Git commit %',    desc = 'commit current file' },
         { '<leader>gs', git_st,             desc = 'Git status picker' },
         { '<leader>gp', ':Git push origin', desc = 'push commits to origin' },
