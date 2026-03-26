@@ -44,8 +44,6 @@ opt.conceallevel = 2
 wopt.spell = false
 bopt.spelllang = "en_us"
 
-opt.laststatus = 3
-
 opt.signcolumn = "auto"
 opt.termguicolors = true
 
