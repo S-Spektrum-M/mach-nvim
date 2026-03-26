@@ -4,8 +4,8 @@ local autosave_timer = vim.loop.new_timer()
 local function save_buf(args)
     local bufnr = args.buf
     if vim.api.nvim_buf_is_valid(bufnr)
-        and vim.api.nvim_buf_get_option(bufnr, "modified")
-        and vim.api.nvim_buf_get_option(bufnr, "buftype") == ""
+        and vim.bo[bufnr].modified
+        and vim.bo[bufnr].buftype == ""
     then
         if vim.mach_opts.mach_builtins.autosave.enabled then
             vim.api.nvim_command("silent! write")
