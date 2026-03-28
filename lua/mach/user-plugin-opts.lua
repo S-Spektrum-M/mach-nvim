@@ -134,11 +134,14 @@ vim.mach_opts = {
         },
         appearance = { nerd_font_variant = 'mono' },
 
+        snippets = { preset = 'luasnip' },
+
         sources = {
             default = {
                 'avante',
                 'lsp',
                 'path',
+                'snippets',
                 'buffer',
                 'copilot',
             },

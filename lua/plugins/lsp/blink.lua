@@ -6,6 +6,7 @@ return {
     dependencies = {
         'Kaiser-Yang/blink-cmp-avante',
         "giuxtaposition/blink-cmp-copilot",
+        { "L3MON4D3/LuaSnip", version = "v2.*" },
     },
 
     event = "InsertEnter",
