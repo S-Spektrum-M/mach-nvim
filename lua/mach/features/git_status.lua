@@ -1,9 +1,12 @@
 local function git_st()
-    local in_git_repo = vim.fn.system('git rev-parse --is-inside-work-tree 2>/dev/null'):match('true')
-    if not in_git_repo then
+
+    local not_in_git_repo = vim.fn.system('git rev-parse --is-inside-work-tree'):match('fatal') ~= nil
+
+    if not_in_git_repo then
         vim.notify('Not inside a git repository', vim.log.levels.WARN)
         return
     end
+
     local git_status = vim.fn.system('git status --short')
     if git_status == '' or git_status == nil then
         vim.notify('No git changes', vim.log.levels.INFO)
