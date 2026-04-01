@@ -47,4 +47,7 @@ bopt.spelllang = "en_us"
 opt.signcolumn = "auto"
 opt.termguicolors = true
 
+opt.grepprg = "rg --vimgrep"
+opt.grepformat = "%f:%l:%c:%m"
+
 vim.g.mapleader = " "
