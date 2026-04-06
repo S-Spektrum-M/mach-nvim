@@ -11,6 +11,7 @@ return {
         { '<leader>gA', '<cmd>Git restore --stage %<CR>', desc = 'remove current file from commit', },
 
         { '<leader>gp', ':Git push origin', desc = 'push commits to origin' },
+        { '<leader>gi', ':Git push origin --force-with-lease', desc = 'push commits to origin' },
         { '<leader>gP', ':Git pull origin', desc = 'pull from origin' },
 
         --- from lua/plugins/ui/snacks.lua:28:5
