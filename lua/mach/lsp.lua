@@ -27,21 +27,17 @@ for _, map_elem in ipairs(maps) do
     vim.keymap.set(unpack(map_elem))
 end
 
-local servers = {
-    "bashls",
-    "neocmake",
-    "clangd",
-    "denols",
-    "gopls",
-    "jsonls",
-    "lua_ls",
-    "pylsp",
-    "rust_analyzer",
-    "taplo",
-    "texlab",
-    "yamlls",
-    "zls",
-    "harper-ls",
-}
+local lsp_dir = vim.fn.stdpath("config") .. "/lsp"
+local servers = {}
+local scan = vim.loop.fs_scandir(lsp_dir)
+if scan then
+    while true do
+        local name, t = vim.loop.fs_scandir_next(scan)
+        if not name then break end
+        if t == "file" and name:match("%.lua$") then
+            table.insert(servers, (name:gsub("%.lua$", "")))
+        end
+    end
+end
 
 vim.lsp.enable(servers)
