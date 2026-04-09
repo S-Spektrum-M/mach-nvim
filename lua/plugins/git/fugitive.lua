@@ -13,6 +13,7 @@ return {
         { '<leader>gp', ':Git push origin', desc = 'push commits to origin' },
         { '<leader>gi', ':Git push origin --force-with-lease', desc = 'push commits to origin' },
         { '<leader>gP', ':Git pull origin', desc = 'pull from origin' },
+        { '<leader>gr', ':Git rebase -i', desc = 'interactive rebase' },
 
         --- from lua/plugins/ui/snacks.lua:28:5
         --[[ {
