@@ -189,7 +189,7 @@ vim.mach_opts = {
     },
     -- render-markdown
     render_markdown = {
-        file_types = { "markdown", "Avante" },
+        file_types = { "markdown" },
     },
     -- comment
     comment = {
@@ -257,13 +257,6 @@ vim.mach_opts = {
     treesitter = {
         sync_install = false, -- async parser install
         auto_install = false, -- avoid delay on first open
-        highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = false,
-        },
-        indent = {
-            enable = true,
-        },
         incremental_selection = {
             enable = true,
         },

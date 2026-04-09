@@ -1,11 +1,15 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TSUpdate" },
-    config = function()
-        vim.defer_fn(function()
-            require("nvim-treesitter.configs").setup(vim.mach_opts.treesitter)
-        end, 20) -- delay to avoid blocking BufReadPost
+    branch = "main",
+    -- build = ":TSUpdate",
+    init = function()
+        vim.api.nvim_create_autocmd('FileType', {
+            callback = function()
+                -- Enable treesitter highlighting and disable regex syntax
+                pcall(vim.treesitter.start)
+                -- Enable treesitter-based indentation
+                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end,
+        })
     end,
 }
