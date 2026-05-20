@@ -144,6 +144,7 @@ vim.mach_opts = {
                 'snippets',
                 'buffer',
                 'copilot',
+                'tmp_files',
             },
             providers = {
                 avante = {
@@ -158,6 +159,11 @@ vim.mach_opts = {
                     module = "blink-cmp-copilot",
                     score_offset = 100,
                     async = true,
+                },
+                tmp_files = {
+                    name = 'TmpFiles',
+                    module = 'mach.tmp_files_cmp',
+                    score_offset = 100,
                 },
 
             },
