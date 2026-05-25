@@ -41,13 +41,14 @@ end
 local plugin_dirs = { "custom", "dap", "editor", "files", "git", "lsp", "lsp/extensions", "terminal", "ui", }
 
 -- Load all plugin specs from each category
-local all_specs = {
+local all_specs = {}
+
+local lazy_opts = {
     performance = {
         rtp = {
             disabled_plugins = {
-                "gzip", "zipPlugin", "tarPlugin", "netrwPlugin", "matchit",
-                "matchparen", "tutor", "spellfile_plugin", "tohtml",
-                "man", "rplugin", "editorconfig",
+                "gzip", "zipPlugin", "tarPlugin", "matchit", "matchparen", "tutor", "spellfile_plugin", "tohtml",
+                "rplugin", "editorconfig",
             }
         },
         cache = { enabled = true },
@@ -60,4 +61,4 @@ for _, dir in ipairs(plugin_dirs) do
 end
 
 -- Setup Lazy with discovered specs
-require("lazy").setup(all_specs, nil)
+require("lazy").setup(all_specs, lazy_opts)
