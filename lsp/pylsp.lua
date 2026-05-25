@@ -5,7 +5,7 @@ end
 local default_config = {
     cmd = { exe_name('pylsp') },
     filetypes = { 'python' },
-    rootmarkers = {'__pycache__', },
+    root_markers = {'__pycache__', },
     single_file_support = true,
     on_attach = function(client, bufnr)
         local navic = require("nvim-navic")
