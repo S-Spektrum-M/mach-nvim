@@ -1,6 +1,4 @@
-local function exe_name(lsp_name)
-    return vim.fn.stdpath('data') .. '/mason/bin/' .. lsp_name
-end
+local exe_name = require('mach.lsp_util').exe_name
 
 local default_config = {
     cmd = { exe_name('deno'), 'lsp' },

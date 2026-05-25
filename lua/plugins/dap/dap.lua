@@ -1,6 +1,4 @@
-local function exe_name(name)
-    return vim.fn.stdpath('data') .. '/mason/bin/' .. name
-end
+local exe_name = require('mach.lsp_util').exe_name
 
 return {
     "mfussenegger/nvim-dap",
