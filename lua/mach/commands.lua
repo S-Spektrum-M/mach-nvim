@@ -8,7 +8,7 @@ end
 cmd("InitFdCache", fd_cache.init_fd_cache)
 cmd("ClearFdCache", fd_cache.clear_fd_cache)
 cmd("ListFdFiles", fd_cache.list_files)
-cmd("Projects", function() Snacks.picker.files({ cwd = "~/projects", title = "Projects", }) end)
+cmd("Projects", function() Snacks.picker.files({ cwd = "~/Projects", title = "Projects", }) end)
 cmd("Papers", function() Snacks.picker.files({ cwd = "~/papers", title = "Papers", }) end)
 cmd("Notes", function() Snacks.picker.files({ cwd = "~/notes", title = "Notes", }) end)
 cmd("Update", function()
