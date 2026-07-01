@@ -11,6 +11,11 @@ return {
             desc = "Find Files"
         },
         {
+            "<C-a>",
+            function() Snacks.picker.colorschemes() end,
+            desc = "Color Switcher"
+        },
+        {
             "<C-r>",
             function() Snacks.picker.grep() end,
             desc = "Live Grep"
