@@ -1,130 +1,149 @@
-local function git_st()
+local status_highlights = {
+    ['?'] = 'SnacksPickerUntracked',
+    A = 'SnacksPickerAdded',
+    C = 'SnacksPickerRenamed',
+    D = 'SnacksPickerDeleted',
+    M = 'SnacksPickerModified',
+    R = 'SnacksPickerRenamed',
+    T = 'SnacksPickerModified',
+    U = 'SnacksPickerOrphaned',
+}
 
-    local not_in_git_repo = vim.fn.system('git rev-parse --is-inside-work-tree'):match('fatal') ~= nil
+local conflict_statuses = {
+    AA = true,
+    AU = true,
+    DD = true,
+    DU = true,
+    UA = true,
+    UD = true,
+    UU = true,
+}
 
-    if not_in_git_repo then
-        vim.notify('Not inside a git repository', vim.log.levels.WARN)
-        return
+local function display_status(status)
+    if conflict_statuses[status] then
+        return 'U', status_highlights.U
     end
 
-    local git_status = vim.fn.system('git status --short')
-    if git_status == '' or git_status == nil then
-        vim.notify('No git changes', vim.log.levels.INFO)
-        return
+    if status == '??' then
+        return '?', status_highlights['?']
     end
 
+    for _, code in ipairs({ 'D', 'R', 'C', 'A', 'M', 'T' }) do
+        if status:find(code, 1, true) then
+            return code, status_highlights[code]
+        end
+    end
+
+    return vim.trim(status), 'SnacksPickerDefault'
+end
+
+local function build_items(output, cwd)
+    local entries = vim.split(output, '\0', { plain = true, trimempty = true })
     local items = {}
-    local item_index = 1
+    local entry_index = 1
 
-    -- Helper function to add directory contents recursively
-    local function add_directory_contents(dir_path, base_status)
-        local handle = vim.loop.fs_scandir(dir_path)
-        if not handle then
-            return
-        end
+    while entry_index <= #entries do
+        local entry = entries[entry_index]
+        local status = entry:sub(1, 2)
+        local path = entry:sub(4)
+        local text = path
 
-        while true do
-            local name, type = vim.loop.fs_scandir_next(handle)
-            if not name then
-                break
-            end
-
-            local full_path = dir_path .. '/' .. name
-
-            if type == 'file' then
-                table.insert(items, {
-                    idx = item_index,
-                    score = item_index,
-                    text = full_path .. ' (from directory)',
-                    status = base_status,
-                    file = full_path,
-                })
-                item_index = item_index + 1
-            elseif type == 'directory' and name ~= '.git' then
-                -- Recursively add subdirectory contents
-                add_directory_contents(full_path, base_status)
+        -- With porcelain v1's -z format, renames and copies are emitted as
+        -- "destination\0source\0" instead of "source -> destination".
+        if status:find('[RC]') then
+            local source = entries[entry_index + 1]
+            if source then
+                text = source .. ' -> ' .. path
+                entry_index = entry_index + 1
             end
         end
+
+        local absolute_path = vim.fs.normalize(vim.fs.joinpath(cwd, path))
+        items[#items + 1] = {
+            idx = #items + 1,
+            score = #items + 1,
+            text = text,
+            status = status,
+            file = absolute_path,
+            is_directory = vim.fn.isdirectory(absolute_path) == 1,
+        }
+
+        entry_index = entry_index + 1
     end
 
-    for line in vim.gsplit(git_status, '\n') do
-        if line ~= '' then
-            local status = line:sub(1, 2)
-            local file_part = line:sub(4)
-            local file_to_open = file_part
+    return items
+end
 
-            if status:match('R') then
-                local parts = vim.split(file_part, ' -> ')
-                file_to_open = parts[2]
-            end
-
-            -- Check if the path is a directory
-            local is_directory = vim.fn.isdirectory(file_to_open) == 1
-
-            if is_directory then
-                -- Add the directory entry itself
-                table.insert(items, {
-                    idx = item_index,
-                    score = item_index,
-                    text = file_part .. ' (directory)',
-                    status = status,
-                    file = file_to_open,
-                    is_directory = true,
-                })
-                item_index = item_index + 1
-
-                -- Add all files within the directory
-                add_directory_contents(file_to_open, status)
-            else
-                -- Regular file entry
-                table.insert(items, {
-                    idx = item_index,
-                    score = item_index,
-                    text = file_part,
-                    status = status,
-                    file = file_to_open,
-                })
-                item_index = item_index + 1
-            end
-        end
-    end
-
+local function open_picker(items)
     require('snacks').picker({
         items = items,
         format = function(item)
-            local ret = {}
-            local status_hl_map = {
-                [' M'] = { text = 'M', hl = 'SnacksPickerModified' },
-                ['M '] = { text = 'M', hl = 'SnacksPickerModified' },
-                ['MM'] = { text = 'M', hl = 'SnacksPickerModified' },
-                ['A '] = { text = 'A', hl = 'SnacksPickerAdded' },
-                ['AM'] = { text = 'A', hl = 'SnacksPickerAdded' },
-                ['AD'] = { text = 'A', hl = 'SnacksPickerAdded' },
-                ['D '] = { text = 'D', hl = 'SnacksPickerDeleted' },
-                [' D'] = { text = 'D', hl = 'SnacksPickerDeleted' },
-                ['R '] = { text = 'R', hl = 'SnacksPickerRenamed' },
-                ['??'] = { text = '?', hl = 'SnacksPickerUntracked' },
-            }
-            local status_display = status_hl_map[item.status] or { text = item.status, hl = 'SnacksPickerDefault' }
-            ret[#ret + 1] = { '[' .. status_display.text .. ']', status_display.hl }
-
-            -- Add visual indicator for directories
+            local code, status_hl = display_status(item.status)
             local text_hl = item.is_directory and 'SnacksPickerDirectory' or 'SnacksPickerPath'
-            ret[#ret + 1] = { ' ' .. item.text, text_hl }
-            return ret
+
+            return {
+                { '[' .. code .. ']', status_hl },
+                { ' ' .. item.text, text_hl },
+            }
         end,
         on_select = function(item)
-            if item and item.file then
-                if item.status:match('D') then
-                    vim.notify('Cannot open a deleted file: ' .. item.file, vim.log.levels.WARN)
-                elseif item.is_directory then
-                    vim.notify('Cannot open directory directly: ' .. item.file, vim.log.levels.WARN)
-                else
-                    vim.cmd('edit ' .. item.file)
-                end
+            if not item or not item.file then
+                return
+            end
+
+            if vim.uv.fs_stat(item.file) == nil then
+                vim.notify('Cannot open a deleted file: ' .. item.text, vim.log.levels.WARN)
+                return
+            end
+
+            local ok, err = pcall(vim.cmd.edit, vim.fn.fnameescape(item.file))
+            if not ok then
+                vim.notify('Cannot open ' .. item.text .. ': ' .. tostring(err), vim.log.levels.WARN)
             end
         end,
     })
+end
+
+local function git_st()
+    local cwd = vim.fn.getcwd()
+
+    vim.system({ 'git', 'rev-parse', '--show-toplevel' }, { cwd = cwd, text = true }, function(root_result)
+        if root_result.code ~= 0 then
+            vim.schedule(function()
+                local message = vim.trim(root_result.stderr or '')
+                vim.notify(message ~= '' and message or 'Not inside a Git repository', vim.log.levels.WARN)
+            end)
+            return
+        end
+
+        local root = vim.trim(root_result.stdout)
+        vim.system({
+            'git',
+            '--no-optional-locks',
+            'status',
+            '--porcelain=v1',
+            '-z',
+            '--untracked-files=all',
+        }, { cwd = root }, function(result)
+            vim.schedule(function()
+                if result.code ~= 0 then
+                    local message = vim.trim(result.stderr or '')
+                    if message == '' then
+                        message = 'git status exited with code ' .. result.code
+                    end
+                    vim.notify(message, vim.log.levels.WARN)
+                    return
+                end
+
+                if not result.stdout or result.stdout == '' then
+                    vim.notify('No git changes', vim.log.levels.INFO)
+                    return
+                end
+
+                open_picker(build_items(result.stdout, root))
+            end)
+        end)
+    end)
 end
 
 return git_st
