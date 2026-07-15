@@ -460,7 +460,11 @@ vim.mach_opts = {
                 path = "~/notes/",
             },
         },
-    }
+    },
+    -- hop config
+    hop = {
+        keys = "etovxqpdygfblzhckisuran",
+    },
 }
 
 local function validate_opts()

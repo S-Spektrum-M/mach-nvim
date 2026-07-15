@@ -62,3 +62,14 @@ end
 
 -- Setup Lazy with discovered specs
 require("lazy").setup(all_specs, lazy_opts)
+
+-- special runtime configs for hop.nvim
+
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+vim.keymap.set('', '<leader>w', function()
+  hop.hint_words({ direction = directions.AFTER_CURSOR })
+end, {remap=true})
+vim.keymap.set('', '<leader>W', function()
+  hop.hint_words({ direction = directions.BEFORE_CURSOR })
+end, {remap=true})
