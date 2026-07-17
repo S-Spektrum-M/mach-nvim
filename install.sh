@@ -4,7 +4,7 @@
 set -euo pipefail
 
 # --- Configuration ---
-REQUIRED_NVIM_VERSION="0.9.0"
+REQUIRED_NVIM_VERSION="0.11.0"
 
 # --- Colors ---
 WHITE='\033[1;37m'
