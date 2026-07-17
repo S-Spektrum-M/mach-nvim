@@ -409,6 +409,11 @@ vim.mach_opts = {
     hop = {
         keys = "etovxqpdygfblzhckisuran",
     },
+    -- tpipeline config
+    tpipeline = {
+        enabled = true,
+        autoembed = false,
+    },
 }
 
 local function validate_opts()

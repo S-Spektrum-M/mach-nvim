@@ -4,7 +4,7 @@ return {
     config = function()
         vim.defer_fn(function()
             require('lualine').setup(vim.mach_opts.lualine)
-            if os.getenv("TMUX") then
+            if os.getenv("TMUX") and vim.mach_opts.tpipeline.enabled then
                 vim.opt.laststatus = 0
                 vim.api.nvim_set_hl(0, 'StatusLine', { link = 'Normal' })
                 vim.api.nvim_set_hl(0, 'StatusLineNC', { link = 'Normal' })
@@ -17,8 +17,11 @@ return {
         "nvim-tree/nvim-web-devicons",
         {
             "vimpostor/vim-tpipeline",
-            config = function()
-                vim.g.tpipeline_autoembed = 1
+            enabled = function()
+                return vim.mach_opts.tpipeline.enabled
+            end,
+            init = function()
+                vim.g.tpipeline_autoembed = vim.mach_opts.tpipeline.autoembed and 1 or 0
             end,
         },
     },
