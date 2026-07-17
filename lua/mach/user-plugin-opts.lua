@@ -173,7 +173,6 @@ vim.mach_opts = {
 
         enabled = function()
             local disabled = false
-                or (vim.tbl_contains({ "markdown" }, vim.bo.filetype))
                 or (vim.bo.buftype == "prompt")
                 or (vim.fn.reg_recording() ~= "")
                 or (vim.fn.reg_executing() ~= "")
