@@ -42,7 +42,9 @@ return {
         },
         {
             "gd",
-            function() Snacks.picker.lsp_definitions() end,
+            function()
+                require("mach.lsp").navigate(function() Snacks.picker.lsp_definitions() end)
+            end,
             desc = "Go to Lsp Defintion"
         },
         {
