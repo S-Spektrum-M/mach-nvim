@@ -2,7 +2,6 @@
 -- Do not change without reading the relevant plugin-opt-docs.md entry.
 
 vim.mach_enabled = {
-    "avante",
     "blink",
     "img_clip",
     "render_markdown",
@@ -77,52 +76,6 @@ vim.mach_opts = {
             }
         }
     },
-    -- avante config
-    avante = {
-        -- TODO: Other Providers
-        auto_suggestions_provider = "ollama",
-        provider = "openai",
-        providers = {
-            openai = {
-                endpoint = "https://api.openai.com/v1",
-                model = "o4-mini",
-                timeout = 30000,
-                extra_request_body = {
-                    reasoning_effort = "low",
-                    temperature = 0.75,
-                    max_completion_tokens = 32768,
-                },
-            },
-            ollama = {
-                model = "gemma3:4b",
-            },
-        },
-        acp_providers = {
-            ["gemini-cli"] = {
-                command = "gemini",
-                args = {
-                    "--experimental-acp"
-                },
-                env = {
-                    NODE_NO_WARNINGS = 1,
-                    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-                },
-            },
-        },
-        behaviour = {
-            auto_suggestions = true, -- Experimental stage
-            auto_set_highlight_group = true,
-            auto_set_keymaps = true,
-            auto_apply_diff_after_generation = false,
-            support_paste_from_clipboard = false,
-            minimize_diff = true,                        -- Whether to remove unchanged lines when applying a code block
-            enable_token_counting = true,                -- Whether to enable token counting. Default to true.
-            enable_cursor_planning_mode = false,         -- Whether to enable Cursor Planning Mode. Default to false.
-            enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
-        },
-        file_selector = { provider = "snacks", },
-        windows = { position = "right", wrap = true, width = 20, },
-    },
     -- blink config
     blink = {
         keymap = { preset = 'super-tab' },
@@ -138,7 +91,6 @@ vim.mach_opts = {
 
         sources = {
             default = {
-                'avante',
                 'lsp',
                 'path',
                 'snippets',
@@ -147,13 +99,6 @@ vim.mach_opts = {
                 'tmp_files',
             },
             providers = {
-                avante = {
-                    module = 'blink-cmp-avante',
-                    name = 'Avante',
-                    opts = {
-                        -- options for blink-cmp-avante
-                    }
-                },
                 copilot = {
                     name = "copilot",
                     module = "blink-cmp-copilot",
