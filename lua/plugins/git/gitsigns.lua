@@ -4,10 +4,6 @@ return {
     config = function()
         require('gitsigns').setup(vim.mach_opts.gitsigns)
     end,
-    dependencies = {
-        'nvim-lua/plenary.nvim',
-        'vim-fugitive',
-    },
     keys = {
         {"ghn", "<cmd>Gitsigns next_hunk<CR>", desc = "go to next git hunk" },
         {"ghp", "<cmd>Gitsigns prev_hunk<CR>", desc = "go to previous git hunk" },
