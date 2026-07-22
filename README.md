@@ -31,3 +31,13 @@ curl https://raw.githubusercontent.com/S-Spektrum-M/mach-nvim/main/install.sh  -
 chmod +x install.sh
 ./install.sh
 ```
+
+## Reference
+
+Run `:help mach` inside Neovim to open the complete Mach reference. The help
+page is generated from `reference.md`; after editing that file, rebuild it from
+the repository root with:
+
+```bash
+nvim --headless -u NONE -i NONE -l scripts/generate_help.lua
+```
