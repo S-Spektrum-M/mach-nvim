@@ -35,7 +35,7 @@ local lsp_loc = function()
 end
 
 local nvim_ver = vim.version()
-local mach_major, mach_minor, mach_patch = 1, 2, 5
+local mach_major, mach_minor, mach_patch = 2, 0, 0
 local mach_ver = ("%d.%d.%d"):format(mach_major, mach_minor, mach_patch)
 
 --[[
