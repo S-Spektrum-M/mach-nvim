@@ -1,18 +1,3 @@
---[[ for _, plugin in ipairs(
-    {
-  "gzip", "zipPlugin", "tarPlugin", "netrwPlugin", "matchit",
-  "matchparen", "tutor", "spellfile_plugin", "tohtml",
-  "man", "rplugin", "editorconfig",
-}
-) do
-  vim.g["loaded_" .. plugin] = 1
-end ]]
-
-vim.cmd [[
-    filetype plugin indent on
-    syntax enable
-]]
-
 local opt = vim.opt
 local wopt = vim.wo
 local bopt = vim.bo
