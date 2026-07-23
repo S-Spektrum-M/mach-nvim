@@ -1,3 +1,9 @@
+vim.cmd [[
+    filetype plugin indent on
+    syntax enable
+]]
+
+
 local opt = vim.opt
 local wopt = vim.wo
 local bopt = vim.bo
